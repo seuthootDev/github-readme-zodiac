@@ -42,65 +42,66 @@ Open the Gist itself to see the **full** card (description + tagline under the p
 
 ---
 
-## 1) Pin a Zodiac Gist — fork this repo
+## 1) Pin a Zodiac Gist
 
-Same idea as productive-box: **fork → Action updates your Gist → pin that Gist**.
+Same idea as productive-box: **Action updates your Gist → pin that Gist**. No Vercel needed for Pins.
 
-> You do **not** need your own Vercel for the Pin / Gist path.  
-> The Action runs on **your fork** (GitHub-hosted) and only needs a Gist + token.
+| You are… | Where to put secrets / run the Action |
+|----------|----------------------------------------|
+| **Repo owner** (this repo) | Use **this repo** — no fork |
+| **Someone else** | [Fork this repo](https://github.com/seuthootDev/github-readme-zodiac), then use **your fork** |
 
-### 1. Fork
-
-Fork [seuthootDev/github-readme-zodiac](https://github.com/seuthootDev/github-readme-zodiac).
-
-### 2. Create a public Gist
+### 1. Create a public Gist
 
 1. https://gist.github.com/  
 2. Filename e.g. `zodiac.md`, any placeholder text  
 3. **Create public gist**  
-4. Copy the Gist ID:  
+4. Copy only the **Gist ID** (not the `.js` embed URL):  
    `https://gist.github.com/YOU/`**`GIST_ID`**
 
-### 3. Create a token
+### 2. Create a token (once)
 
-https://github.com/settings/tokens/new → enable **`gist`** scope only.
+https://github.com/settings/tokens → **Tokens (classic)** → enable **`gist`** only.  
+The token string is shown **once** — save it. The same PAT can be reused on Western + Asian repos.
 
-### 4. Add secrets on **your fork**
+### 3. Secrets and Variables
 
-On **your fork**: Settings → Secrets and variables → Actions
+On the repo (or your fork): **Settings → Secrets and variables → Actions**
+
+**Secrets** tab:
 
 | Secret | Value |
 |--------|--------|
 | `GH_TOKEN` | PAT with `gist` scope |
-| `GIST_ID` | Gist ID from the URL |
+| `GIST_ID` | Gist ID only (see above) |
 
-Optional **Variables**:
+**Variables** tab (optional but recommended):
 
 | Variable | Value | Notes |
 |----------|--------|--------|
+| `BIRTHDATE` | `YYYY-MM-DD` | e.g. `1995-04-24` → zodiac sign |
 | `USERNAME` | your GitHub login | default: token owner |
-| `BIRTHDATE` | `YYYY-MM-DD` | maps to zodiac sign |
-| `SIGN` | `scorpio` | forces a sign |
+| `SIGN` | `scorpio` | force a sign |
 | `NAME` | display name | optional override |
 | `ROLE` | `Backend Dev` | optional override |
 
-### 5. Run the Action
+> Birthdate is a **Variable** (`BIRTHDATE`), not a Secret.  
+> Path: Settings → Secrets and variables → Actions → **Variables** → New repository variable.
 
-1. On your fork: **Actions** → enable workflows if prompted  
+### 4. Run the Action
+
+1. **Actions** → enable workflows if prompted  
 2. **Update Zodiac Gist** → **Run workflow**  
 3. [Pin the Gist on your profile](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/pinning-items-to-your-profile)
 
-The workflow also runs on every push to `main` and daily at 00:00 UTC.
+Also runs on every push to `main` and daily at 00:00 UTC.
 
-### Fork vs Vercel (quick FAQ)
+### Pin vs SVG
 
-| Feature | Uses your fork’s Action? | Uses [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)? |
-|---------|--------------------------|----------------------------------------------------------------------------------|
+| Feature | Action on this repo / your fork? | Uses [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)? |
+|---------|----------------------------------|----------------------------------------------------------------------------------|
 | **Pinned Gist** | Yes | No |
 | **SVG in README** | No | Yes (shared public instance), unless you deploy your own |
-
-So: **forking for Pins does not put load on the Vercel app.**  
-SVG embeds that point at `github-readme-zodiac.vercel.app` do share that instance (GitHub API rate limits / traffic). That’s fine for now; heavy use can later move to self-hosted Vercel + `GITHUB_TOKEN`.
 
 ---
 
