@@ -222,10 +222,14 @@ node scripts/preview-all-gists.js
 ```
 action.yml
 .github/workflows/update-gist.yml
+assets/signs/                 # title glyphs
+assets/signs-line/            # line-art accent
 docs/gist-pin-preview-12-signs.pdf
 docs/gist-pin-preview.html
+docs/license-*.pdf            # Magnific certificates
 scripts/update-gist.js
 scripts/preview-all-gists.js
+scripts/extract-zodiac-signs.py
 src/gist/
 api/card.js
 public/index.html
@@ -236,9 +240,20 @@ public/index.html
 New designs, card copy, sign-flavored roles, pin layouts — **ideas are welcome anytime.**  
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Credits / attribution
+
+Card sign artwork is derived from Magnific (Freepik) assets under a **free license with attribution**:
+
+| Used for | Asset | Designed by | Certificate |
+|----------|--------|-------------|-------------|
+| Title glyphs (`assets/signs`) | [zodiac white signs set…](https://www.magnific.com/free-vector/zodiac-white-signs-set-isolated-dark-background-zodiac-line-stylized-symbols-astrological-calendar-collection-horoscope-constellation-vector-illustration_67006418.htm) | [hannazasimova — Magnific.com](https://www.magnific.com) | [docs/license-zodiac-white-signs-set-67006418.pdf](docs/license-zodiac-white-signs-set-67006418.pdf) |
+| Line-art accent (`assets/signs-line`) | [flat zodiac sign collection](https://www.magnific.com/free-vector/flat-zodiac-sign-collection_15112717.htm) | [Freepik — Magnific.com](https://www.magnific.com) | [docs/license-flat-zodiac-sign-collection-15112717.pdf](docs/license-flat-zodiac-sign-collection-15112717.pdf) |
+
 ## License
 
 [MIT](LICENSE) © seuthootDev
+
+Third-party artwork remains under its Magnific license (see certificates above); the MIT license covers this repository’s code.
 
 ## Roadmap
 
