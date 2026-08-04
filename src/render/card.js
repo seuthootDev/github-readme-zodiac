@@ -109,7 +109,7 @@ function renderConstellation(zodiac, colors, uid) {
       <image href="${icon}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"/>
     </mask>
     <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${colors.accent}" opacity="0.88" mask="url(#${uid}-const)">
-      <animate attributeName="opacity" values="0.72;0.95;0.8;0.9;0.72" keyTimes="0;0.3;0.55;0.8;1" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" dur="7s" begin="0.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.55;1;0.68;0.92;0.55" keyTimes="0;0.3;0.55;0.8;1" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" dur="7s" begin="0.2s" repeatCount="indefinite"/>
     </rect>`;
 }
 
@@ -160,7 +160,7 @@ function renderLineArt(zodiac, colors, uid) {
       <image href="${icon}" x="${x}" y="${y}" width="${size}" height="${size}" preserveAspectRatio="xMidYMid meet"/>
     </mask>
     <rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${colors.accent}" opacity="0.9" mask="url(#${uid}-line)">
-      <animate attributeName="opacity" values="0.78;0.96;0.85;0.92;0.78" keyTimes="0;0.35;0.55;0.8;1" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" dur="6.5s" begin="0.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.68;1;0.78;0.94;0.68" keyTimes="0;0.35;0.55;0.8;1" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" dur="6.5s" begin="0.4s" repeatCount="indefinite"/>
     </rect>`;
 }
 
