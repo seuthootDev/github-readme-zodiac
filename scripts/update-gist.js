@@ -84,7 +84,13 @@ async function main() {
   // Prefer GH_TOKEN for gist writes; also use it for higher rate limits when fetching
   process.env.GITHUB_TOKEN = token;
 
-  const username = await resolveUsername(token, process.env.USERNAME?.trim());
+  // Prefer ZODIAC_USERNAME — bare USERNAME is the Windows login name locally.
+  const username = await resolveUsername(
+    token,
+    process.env.ZODIAC_USERNAME?.trim() ||
+      process.env.GH_USER?.trim() ||
+      process.env.USERNAME?.trim(),
+  );
   const birthdate = process.env.BIRTHDATE?.trim() || undefined;
   const sign = process.env.SIGN?.trim() || undefined;
   const name = process.env.NAME?.trim() || undefined;

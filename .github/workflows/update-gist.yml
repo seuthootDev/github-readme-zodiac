@@ -26,7 +26,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           GIST_ID: ${{ secrets.GIST_ID }}
-          USERNAME: ${{ vars.USERNAME }}
+          ZODIAC_USERNAME: ${{ vars.USERNAME }}
           BIRTHDATE: ${{ vars.BIRTHDATE }}
           SIGN: ${{ vars.SIGN }}
           NAME: ${{ vars.NAME }}
