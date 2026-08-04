@@ -2,7 +2,7 @@ import { pickDisplayStats } from "../lib/stats.js";
 import { seededRandom } from "../lib/zodiac.js";
 
 const WIDTH = 600;
-const HEIGHT = 300;
+const HEIGHT = 320;
 
 function escapeXml(str) {
   return String(str ?? "")
@@ -21,6 +21,25 @@ function clamp(n, min = 0, max = 100) {
   return Math.max(min, Math.min(max, n));
 }
 
+function wrapText(text, maxChars, maxLines = 3) {
+  const words = String(text || "").split(/\s+/).filter(Boolean);
+  if (!words.length) return [];
+  const lines = [];
+  let current = "";
+  for (const word of words) {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length > maxChars && current) {
+      lines.push(current);
+      current = word;
+      if (lines.length >= maxLines) break;
+    } else {
+      current = next;
+    }
+  }
+  if (current && lines.length < maxLines) lines.push(current);
+  return lines;
+}
+
 function renderStars(seed, color, count = 48) {
   const rand = seededRandom(`stars-${seed}`);
   const parts = [];
@@ -32,7 +51,6 @@ function renderStars(seed, color, count = 48) {
     const peak = Math.min(1, base + 0.25 + rand() * 0.3);
     const dur = (1.8 + rand() * 3.2).toFixed(2);
     const begin = (rand() * 4).toFixed(2);
-    // Twinkle via opacity pulse; staggered so the sky feels alive
     parts.push(
       `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="${color}" opacity="${base.toFixed(2)}">
         <animate attributeName="opacity" values="${base.toFixed(2)};${peak.toFixed(2)};${(base * 0.55).toFixed(2)};${base.toFixed(2)}" dur="${dur}s" begin="${begin}s" repeatCount="indefinite"/>
@@ -52,7 +70,6 @@ function renderConstellation(points, colors) {
       `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${colors.accent}" stroke-opacity="0.55" stroke-width="1.2"/>`,
     );
   }
-  // Close a soft loop for denser shapes
   if (points.length > 3) {
     const [x1, y1] = points[points.length - 1];
     const [x2, y2] = points[0];
@@ -77,7 +94,7 @@ function renderConstellation(points, colors) {
 function renderStatBars(displayStats, colors) {
   return displayStats
     .map((stat, i) => {
-      const y = 198 + i * 28;
+      const y = 200 + i * 26;
       const w = barWidth(stat.value);
       return `
       <text x="36" y="${y}" fill="${colors.muted}" font-size="12" font-family="Georgia, 'Times New Roman', serif">${escapeXml(stat.label)}</text>
@@ -97,6 +114,18 @@ function renderLanguages(languages, colors) {
   return `<text x="36" y="168" fill="${colors.accent}" font-size="13" font-family="Georgia, 'Times New Roman', serif" letter-spacing="0.5">${escapeXml(label)}</text>`;
 }
 
+function renderDescription(zodiac, colors) {
+  const lines = wrapText(zodiac.description, 34, 3);
+  if (!lines.length) return "";
+  return lines
+    .map((line, i) => {
+      const prefix = i === 0 ? "💫 " : "   ";
+      const y = 148 + i * 17;
+      return `<text class="body" x="340" y="${y}" fill="${colors.muted}" font-size="12">${prefix}${escapeXml(line)}</text>`;
+    })
+    .join("\n    ");
+}
+
 /**
  * @param {{ profile: object, zodiac: object, stats: object, meta?: { source?: string } }} input
  */
@@ -106,6 +135,8 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
   const displayName = profile.name || profile.username;
   const role = profile.role || "Software Developer";
   const uid = `zg-${profile.username}-${zodiac.id}`.replace(/[^a-z0-9-]/gi, "");
+  const sourceLabel =
+    meta.source === "birthdate" ? "mapped by birthdate" : "mapped by star-seed";
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeXml(displayName)} Developer Zodiac Card">
@@ -134,30 +165,33 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
     <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#${uid}-glow)"/>
     ${renderStars(`${profile.username}-${zodiac.id}`, colors.star)}
 
-    <!-- constellation panel -->
-    <g transform="translate(310, 10)" opacity="0.95">
+    <g transform="translate(310, 8)" opacity="0.95">
       ${renderConstellation(zodiac.constellation, colors)}
     </g>
 
-    <text class="title" x="36" y="52" fill="${colors.accent}" font-size="22" font-weight="700" letter-spacing="3">
+    <text class="title" x="36" y="48" fill="${colors.accent}" font-size="22" font-weight="700" letter-spacing="3">
       ${escapeXml(zodiac.symbol)}  ${escapeXml(zodiac.sign.toUpperCase())}
     </text>
-    <text class="title" x="36" y="82" fill="${colors.text}" font-size="18" opacity="0.95">
+    <text class="title" x="36" y="76" fill="${colors.text}" font-size="18" opacity="0.95">
       ${escapeXml(zodiac.title)}
     </text>
 
-    <text class="body" x="36" y="122" fill="${colors.text}" font-size="20" font-weight="600">
+    <text class="body" x="36" y="114" fill="${colors.text}" font-size="20" font-weight="600">
       ${escapeXml(displayName)}
     </text>
-    <text class="body" x="36" y="144" fill="${colors.muted}" font-size="13">
+    <text class="body" x="36" y="136" fill="${colors.muted}" font-size="13">
       ${escapeXml(role)}
     </text>
 
     ${renderLanguages(profile.languages, colors)}
+    ${renderDescription(zodiac, colors)}
     ${renderStatBars(displayStats, colors)}
 
-    <text x="560" y="278" text-anchor="end" fill="${colors.muted}" font-size="10" font-family="Georgia, serif" opacity="0.7">
-      ${escapeXml(meta.source === "birthdate" ? "mapped by birthdate" : "mapped by star-seed")} · developer zodiac
+    <text class="body" x="36" y="298" fill="${colors.accent}" font-size="12" opacity="0.9">
+      ✦ Your coding personality written in the stars
+    </text>
+    <text x="560" y="298" text-anchor="end" fill="${colors.muted}" font-size="10" font-family="Georgia, serif" opacity="0.55">
+      ${escapeXml(sourceLabel)}
     </text>
   </g>
 </svg>`;
