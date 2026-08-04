@@ -90,7 +90,7 @@ function sanitizeText(value, maxLen) {
     .slice(0, maxLen);
 }
 
-/** Optional ?width=240..900 (default handled in renderer ≈ 420). */
+/** Optional ?width=240..900 (default handled in renderer = 360). */
 function parseWidth(value) {
   if (value == null || value === "") return undefined;
   const n = Number(value);

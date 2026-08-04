@@ -132,12 +132,12 @@ node scripts/update-gist.js
 | `role` | Override role |
 | `width` | Display width in px (`240`–`900`, default **`360`**) |
 
-Default card renders at **360×192** (github-readme-stats-like scale, from a 600×320 artboard). Bigger/smaller:
+Default card renders at **360×192** (scaled from a 600×320 artboard). Override anytime:
 
 ```md
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
 
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=360)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480)
 
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=560)
 ```
