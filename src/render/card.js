@@ -1,5 +1,7 @@
 import { pickDisplayStats } from "../lib/stats.js";
 import { seededRandom } from "../lib/zodiac.js";
+import signIcons from "../data/sign-icons.js";
+import signIconsLine from "../data/sign-icons-line.js";
 
 /** Design coordinate space (viewBox). Display size can be smaller via options. */
 const WIDTH = 600;
@@ -129,6 +131,42 @@ function renderDescription(zodiac, colors) {
     .join("\n    ");
 }
 
+/** Line-art illustration under the blurb (right column), tinted to accent. */
+function renderLineArt(zodiac, colors, uid) {
+  const icon = signIconsLine[zodiac.id];
+  if (!icon) return "";
+  const size = 88;
+  const x = 400;
+  const y = 208;
+  return `
+    <mask id="${uid}-line" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${size}" height="${size}">
+      <image href="${icon}" x="${x}" y="${y}" width="${size}" height="${size}" preserveAspectRatio="xMidYMid meet"/>
+    </mask>
+    <rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${colors.accent}" opacity="0.9" mask="url(#${uid}-line)">
+      <animate attributeName="opacity" values="0.78;0.96;0.85;0.92;0.78" keyTimes="0;0.35;0.55;0.8;1" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" dur="6.5s" begin="0.4s" repeatCount="indefinite"/>
+    </rect>`;
+}
+
+/** Sign icon from assets/signs — tinted to accent via mask; falls back to emoji. */
+function renderSignTitle(zodiac, colors, uid) {
+  const icon = signIcons[zodiac.id];
+  const label = escapeXml(zodiac.sign.toUpperCase());
+  if (!icon) {
+    return `<text class="title" x="36" y="48" fill="${colors.accent}" font-size="22" font-weight="700" letter-spacing="3">
+      ${escapeXml(zodiac.symbol)}  ${label}
+    </text>`;
+  }
+  const size = 26;
+  const x = 36;
+  const y = 24;
+  return `
+    <mask id="${uid}-sign" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${size}" height="${size}">
+      <image href="${icon}" x="${x}" y="${y}" width="${size}" height="${size}" preserveAspectRatio="xMidYMid meet"/>
+    </mask>
+    <rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${colors.accent}" mask="url(#${uid}-sign)"/>
+    <text class="title" x="${x + size + 10}" y="48" fill="${colors.accent}" font-size="22" font-weight="700" letter-spacing="3">${label}</text>`;
+}
+
 /**
  * @param {{ profile: object, zodiac: object, stats: object, meta?: { source?: string, width?: number } }} input
  */
@@ -179,9 +217,7 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
       ${renderConstellation(zodiac.constellation, colors)}
     </g>
 
-    <text class="title" x="36" y="48" fill="${colors.accent}" font-size="22" font-weight="700" letter-spacing="3">
-      ${escapeXml(zodiac.symbol)}  ${escapeXml(zodiac.sign.toUpperCase())}
-    </text>
+    ${renderSignTitle(zodiac, colors, uid)}
     <text class="title" x="36" y="76" fill="${colors.text}" font-size="18" opacity="0.95">
       ${escapeXml(zodiac.title)}
     </text>
@@ -195,6 +231,7 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
 
     ${renderLanguages(profile.languages, colors)}
     ${renderDescription(zodiac, colors)}
+    ${renderLineArt(zodiac, colors, uid)}
     ${renderStatBars(displayStats, colors)}
 
     <text class="body" x="36" y="298" fill="${colors.accent}" font-size="12" opacity="0.9">
