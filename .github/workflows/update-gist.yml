@@ -1,16 +1,14 @@
 name: Update Zodiac Gist
 
 on:
-  schedule:
-    # Daily at 00:00 UTC
-    - cron: "0 0 * * *"
+  # Manual: Actions → Update Zodiac Gist → Run workflow
   workflow_dispatch:
+  # Auto: every push to main
   push:
     branches: [main]
-    paths:
-      - "src/**"
-      - "scripts/update-gist.js"
-      - ".github/workflows/update-gist.yml"
+  # Auto: refresh stats daily (00:00 UTC)
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   update-gist:
