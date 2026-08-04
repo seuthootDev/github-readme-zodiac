@@ -154,6 +154,22 @@ SVG embeds that point at `github-readme-zodiac.vercel.app` do share that instanc
 
 ---
 
+## Stats (playful, not astrology)
+
+Each card shows **3 of 5** traits. Which three appear depends on the sign’s `statKeys`. Values are scaled from public GitHub signals (0–100).
+
+| Stat | Drawn from (roughly) |
+|------|----------------------|
+| **Consistency** | Account age + repos per year |
+| **Explorer** | Distinct languages + public repos |
+| **Builder** | Public repos + stars + forks |
+| **Open Source** | Stars + forks + followers |
+| **Debugger** | Open issues + repos (+ a little stars) |
+
+Sister project ([Asian zodiac](https://github.com/seuthootDev/github-readme-chinese-zodiac)) uses the same signals with different labels: Discipline / Ingenuity / Craft / Renown / Insight.
+
+---
+
 ## How it works
 
 **Pinned Gist (fork)**
