@@ -1,12 +1,100 @@
 # github-readme-zodiac
 
-Zodiac-themed SVG profile cards generated from your GitHub activity — made for README embeds.
+Zodiac-themed profile cards from your GitHub activity.
 
 > Your coding personality written in the stars
 
-**Live demo:** [https://github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
+Two ways to show it on your profile:
 
-## Demo
+| Mode | Where it appears | Style |
+|------|------------------|--------|
+| **Pinned Gist** (like [productive-box](https://github.com/maxam2017/productive-box)) | Profile **Pins** | ASCII / text card |
+| **SVG card** | Profile **README** | Full-color 600×300 image |
+
+**Live SVG demo:** [https://github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
+
+---
+
+## 1) Pin a Zodiac Gist (recommended for Pins)
+
+Same idea as productive-box: a GitHub Action writes your card into a **public Gist**, then you **pin that Gist**.
+
+### Prep
+
+1. Create a new **public** Gist: https://gist.github.com/  
+   - Add any filename (e.g. `zodiac.md`) and some placeholder text  
+   - Create public gist  
+   - Copy the Gist ID from the URL  
+     `https://gist.github.com/seuthootDev/`**`GIST_ID`**
+2. Create a token with the **`gist`** scope: https://github.com/settings/tokens/new  
+   - (`repo` is not required for this Action)
+
+### Setup in this repo
+
+1. Open **Settings → Secrets and variables → Actions**
+2. Add **Repository secrets**:
+
+| Secret | Value |
+|--------|--------|
+| `GH_TOKEN` | Personal access token (`gist` scope) |
+| `GIST_ID` | Gist ID from the URL |
+
+3. (Optional) **Variables**:
+
+| Variable | Value |
+|----------|--------|
+| `USERNAME` | GitHub username (default: token owner) |
+| `BIRTHDATE` | `YYYY-MM-DD` |
+| `SIGN` | Force sign: `aries` … `pisces` |
+| `NAME` | Override display name |
+| `ROLE` | Override role |
+
+4. **Actions** tab → enable workflows if needed  
+5. Run **Update Zodiac Gist** → **Run workflow**  
+6. [Pin the Gist on your profile](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/pinning-items-to-your-profile)
+
+The workflow also runs daily at 00:00 UTC.
+
+### Use from another repo
+
+```yaml
+name: Update Zodiac Gist
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: seuthootDev/github-readme-zodiac@main
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+          USERNAME: ${{ vars.USERNAME }}
+          BIRTHDATE: ${{ vars.BIRTHDATE }}
+          SIGN: ${{ vars.SIGN }}
+```
+
+### Local gist update
+
+```bash
+set GH_TOKEN=ghp_xxx
+set GIST_ID=your_gist_id
+set USERNAME=seuthootDev
+node scripts/update-gist.js
+```
+
+---
+
+## 2) SVG card (README embed)
+
+```md
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=YOUR_USERNAME)
+```
+
+### Demo
 
 ```md
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
@@ -14,9 +102,7 @@ Zodiac-themed SVG profile cards generated from your GitHub activity — made for
 
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
 
-## All 12 signs
-
-Force a sign with `&sign=` (demo username: `seuthootDev`):
+### All 12 signs
 
 <p align="center">
   <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aries" width="49%" alt="Aries" />
@@ -33,57 +119,44 @@ Force a sign with `&sign=` (demo username: `seuthootDev`):
   <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=pisces" width="49%" alt="Pisces" />
 </p>
 
-## Usage
-
-Add this to your README (replace the username):
-
-```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=YOUR_USERNAME)
-```
-
-### Options
+### SVG options
 
 | Param | Description |
 |-------|-------------|
 | `username` | GitHub username (**required**) |
-| `birthdate` | `YYYY-MM-DD` — maps to a tropical zodiac sign |
-| `sign` | Force a sign: `aries` … `pisces` |
-| `name` | Override display name (auto from GitHub by default) |
-| `role` | Override role (auto-guessed from top languages by default) |
-
-Examples:
+| `birthdate` | `YYYY-MM-DD` |
+| `sign` | Force sign: `aries` … `pisces` |
+| `name` | Override display name |
+| `role` | Override role |
 
 ```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&birthdate=1998-11-05)
-
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=scorpio)
-
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&name=Seunghoon&role=Backend%20Developer)
-```
-
-Pretty path (same card):
-
-```md
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/card/seuthootDev)
 ```
 
+---
+
 ## How it works
 
+**SVG**
+
 ```
-README image URL
-  → Vercel Node Function (/api/card)
-  → GitHub REST API
-  → Zodiac resolve + fun stats
-  → SVG response
+README image URL → Vercel /api/card → GitHub API → Zodiac + stats → SVG
 ```
 
-- Birthdate provided → tropical zodiac sign
-- No birthdate → deterministic sign from username hash
-- Stat **bars shown** follow each sign (e.g. Scorpio → Debugger / Explorer / Consistency)
-- Stat **values** come from public GitHub signals (playful, not real astrology)
-- Name / role default to auto estimates; pass `name` / `role` only to override
+**Pinned Gist**
 
-## Local development
+```
+GitHub Action (schedule)
+  → GitHub API (profile + repos)
+  → Zodiac + stats
+  → PATCH gist
+  → Pin gist on profile
+```
+
+Stats are playful mappings from public GitHub signals, not real astrology.
+
+## Local development (SVG preview)
 
 ```bash
 npm start
@@ -91,27 +164,25 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000)
 
-```
-http://localhost:3000/api/card?username=seuthootDev
-http://localhost:3000/api/card?username=seuthootDev&sign=leo
-```
+## Deploy (SVG)
 
-## Deploy
+Hosted on Vercel: [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
 
-This project is deployed on Vercel: [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
-
-Optional env var: `GITHUB_TOKEN` — raises GitHub API rate limits (60/hr → 5000/hr). Not required for a basic deploy.
+Optional: `GITHUB_TOKEN` on Vercel for higher API rate limits.
 
 ## Project layout
 
 ```
-api/card.js           Vercel serverless entry
-api/profile.js        Auto name/role for the preview UI
-src/data/zodiac.*     12 signs + palettes
-src/lib/              github / zodiac / stats
-src/render/card.js    600×300 SVG renderer
-public/index.html     preview landing
-scripts/local-server.js
+action.yml                    Reusable Action entry
+.github/workflows/update-gist.yml
+scripts/update-gist.js        Gist updater
+src/gist/render.js            ASCII pin card
+api/card.js                   SVG serverless API
+api/profile.js
+src/data/zodiac.*
+src/lib/
+src/render/card.js
+public/index.html
 ```
 
 ## Roadmap
@@ -119,5 +190,6 @@ scripts/local-server.js
 - [x] Username → zodiac SVG
 - [x] Birthdate mapping + GitHub REST stats
 - [x] Editable name / role (auto by default)
+- [x] Pinned Gist Action (productive-box style)
 - [ ] GraphQL contributions / streak
 - [ ] Richer theme params & animation presets

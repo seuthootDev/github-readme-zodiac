@@ -1,0 +1,10 @@
+name: GitHub Readme Zodiac Gist
+description: Update a pinned Gist with your Developer Zodiac card (productive-box style)
+author: seuthootDev
+branding:
+  icon: star
+  color: purple
+
+runs:
+  using: node20
+  main: scripts/update-gist.js

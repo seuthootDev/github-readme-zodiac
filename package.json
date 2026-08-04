@@ -2,11 +2,12 @@
   "name": "github-readme-zodiac",
   "version": "0.1.0",
   "private": true,
-  "description": "GitHub activity → Zodiac-style SVG profile cards for README",
+  "description": "GitHub activity → Zodiac SVG cards + pinned Gist Action",
   "type": "module",
   "scripts": {
     "start": "node scripts/local-server.js",
-    "dev": "node scripts/local-server.js"
+    "dev": "node scripts/local-server.js",
+    "gist": "node scripts/update-gist.js"
   },
   "engines": {
     "node": ">=18"
