@@ -4,8 +4,8 @@ import { seededRandom } from "../lib/zodiac.js";
 /** Design coordinate space (viewBox). Display size can be smaller via options. */
 const WIDTH = 600;
 const HEIGHT = 320;
-/** Default on-page size — README-friendly (was full 600×320). */
-const DEFAULT_DISPLAY_WIDTH = 420;
+/** Default on-page size — close to github-readme-stats scale. */
+const DEFAULT_DISPLAY_WIDTH = 360;
 
 function escapeXml(str) {
   return String(str ?? "")
