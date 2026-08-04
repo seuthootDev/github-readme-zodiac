@@ -39,6 +39,7 @@ export default async function handler(req, res) {
     const sign = url.searchParams.get("sign") || undefined;
     const role = sanitizeText(url.searchParams.get("role"), 40);
     const name = sanitizeText(url.searchParams.get("name"), 32);
+    const width = parseWidth(url.searchParams.get("width"));
 
     if (!username) {
       return sendErrorSvg(res, 400, "Missing ?username= parameter");
@@ -62,7 +63,7 @@ export default async function handler(req, res) {
       profile,
       zodiac,
       stats,
-      meta: { source },
+      meta: { source, width },
     });
 
     return sendSvg(res, svg);
@@ -87,4 +88,12 @@ function sanitizeText(value, maxLen) {
     .replace(/[\u0000-\u001f\u007f]/g, "")
     .trim()
     .slice(0, maxLen);
+}
+
+/** Optional ?width=240..900 (default handled in renderer ≈ 420). */
+function parseWidth(value) {
+  if (value == null || value === "") return undefined;
+  const n = Number(value);
+  if (!Number.isFinite(n)) return undefined;
+  return Math.max(240, Math.min(900, Math.round(n)));
 }

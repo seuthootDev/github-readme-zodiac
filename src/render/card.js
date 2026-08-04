@@ -1,8 +1,11 @@
 import { pickDisplayStats } from "../lib/stats.js";
 import { seededRandom } from "../lib/zodiac.js";
 
+/** Design coordinate space (viewBox). Display size can be smaller via options. */
 const WIDTH = 600;
 const HEIGHT = 320;
+/** Default on-page size — README-friendly (was full 600×320). */
+const DEFAULT_DISPLAY_WIDTH = 420;
 
 function escapeXml(str) {
   return String(str ?? "")
@@ -127,7 +130,7 @@ function renderDescription(zodiac, colors) {
 }
 
 /**
- * @param {{ profile: object, zodiac: object, stats: object, meta?: { source?: string } }} input
+ * @param {{ profile: object, zodiac: object, stats: object, meta?: { source?: string, width?: number } }} input
  */
 export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
   const colors = zodiac.colors;
@@ -138,8 +141,15 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
   const sourceLabel =
     meta.source === "birthdate" ? "mapped by birthdate" : "mapped by star-seed";
 
+  const displayWidth = clamp(
+    Number(meta.width) || DEFAULT_DISPLAY_WIDTH,
+    240,
+    900,
+  );
+  const displayHeight = Math.round((displayWidth / WIDTH) * HEIGHT);
+
   return `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeXml(displayName)} Developer Zodiac Card">
+<svg width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${WIDTH} ${HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeXml(displayName)} Developer Zodiac Card">
   <title>${escapeXml(displayName)} — ${escapeXml(zodiac.sign)} ${escapeXml(zodiac.title)}</title>
   <defs>
     <linearGradient id="${uid}-bg" x1="0" y1="0" x2="1" y2="1">
@@ -197,4 +207,8 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
 </svg>`;
 }
 
-export const CARD_SIZE = { width: WIDTH, height: HEIGHT };
+export const CARD_SIZE = {
+  width: WIDTH,
+  height: HEIGHT,
+  defaultDisplayWidth: DEFAULT_DISPLAY_WIDTH,
+};

@@ -130,10 +130,16 @@ node scripts/update-gist.js
 | `sign` | Force sign: `aries` … `pisces` |
 | `name` | Override display name |
 | `role` | Override role |
+| `width` | Display width in px (`240`–`900`, default **`420`**) |
+
+Default card renders at **420×224** (scaled from a 600×320 artboard). Bigger/smaller:
 
 ```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=scorpio)
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/card/seuthootDev)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
+
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=360)
+
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=560)
 ```
 
 ---
