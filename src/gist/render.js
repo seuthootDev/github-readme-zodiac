@@ -10,7 +10,7 @@ function padLabel(label, len = 11) {
   return label.length >= len ? label.slice(0, len) : label.padEnd(len, " ");
 }
 
-function wrapLine(text, width = 36) {
+function wrapLine(text, width = 40) {
   const words = String(text || "").split(/\s+/).filter(Boolean);
   if (!words.length) return [];
   const lines = [];
@@ -28,27 +28,10 @@ function wrapLine(text, width = 36) {
   return lines;
 }
 
-/** Approximate visible width (treat most unicode as width 1 for gist monospace). */
-function padEndVisible(str, len) {
-  const s = str ?? "";
-  if (s.length >= len) return s;
-  return s + " ".repeat(len - s.length);
-}
-
-function mergeColumns(leftLines, rightLines, leftWidth = 38, gap = 2) {
-  const rows = Math.max(leftLines.length, rightLines.length);
-  const out = [];
-  for (let i = 0; i < rows; i++) {
-    const left = padEndVisible(leftLines[i] || "", leftWidth);
-    const right = rightLines[i] || "";
-    out.push(right ? `${left}${" ".repeat(gap)}${right}` : left.trimEnd());
-  }
-  return out;
-}
-
 /**
- * Text card for a pinned Gist (productive-box style).
- * First ~5 lines are denser — GitHub pin previews only show a few lines.
+ * Text card for a pinned Gist.
+ * Constellation is its own block (not side-by-side) so alignment never drifts
+ * from emoji / CJK / wide unicode in neighboring columns.
  */
 export function renderGistCard({ profile, zodiac, stats }) {
   const displayStats = pickDisplayStats(stats, zodiac, 3);
@@ -57,28 +40,26 @@ export function renderGistCard({ profile, zodiac, stats }) {
   const langs = (profile.languages || [])
     .slice(0, 3)
     .map((l) => l.name)
-    .join("·");
+    .join(" · ");
 
   const constellation = getAsciiConstellation(zodiac.id);
 
-  // Pin-visible block (left) + constellation (right)
-  const pinLeft = [
+  const lines = [
     `${zodiac.symbol} ${zodiac.sign.toUpperCase()} · ${zodiac.title}`,
+    `${zodiac.element} · ${zodiac.planet}`,
+    "",
+    ...constellation,
+    "",
     `${displayName} · ${role}`,
-    `⭐${profile.stars ?? 0}  📦${profile.publicRepos ?? 0}  👥${profile.followers ?? 0}${langs ? `  ${langs}` : ""}`,
-    `${padLabel(displayStats[0].label)} ${bar(displayStats[0].value)} ${displayStats[0].value}%`,
-    `${padLabel(displayStats[1].label)} ${bar(displayStats[1].value)} ${displayStats[1].value}%`,
+    `*${profile.stars ?? 0}  #${profile.publicRepos ?? 0} repos  ~${profile.followers ?? 0} followers`,
   ];
 
-  const lines = [...mergeColumns(pinLeft, constellation, 40, 3)];
+  if (langs) lines.push(langs);
 
-  // Rest of the card (full gist view)
-  lines.push("────────────────────────────────────────");
-  lines.push(`${zodiac.element} · ${zodiac.planet}`);
-
-  if (displayStats[2]) {
+  lines.push("");
+  for (const stat of displayStats) {
     lines.push(
-      `${padLabel(displayStats[2].label)} ${bar(displayStats[2].value)} ${displayStats[2].value}%`,
+      `${padLabel(stat.label)} ${bar(stat.value)} ${stat.value}%`,
     );
   }
 
@@ -99,7 +80,6 @@ export function renderGistCard({ profile, zodiac, stats }) {
   return lines.join("\n");
 }
 
-/** Preferred gist filename — shows as the pin title. */
 export function gistFilename(zodiac) {
   return `${zodiac.symbol} ${zodiac.sign}.md`;
 }
