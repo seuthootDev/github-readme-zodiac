@@ -9,84 +9,93 @@ Two ways to show it on your profile:
 | Mode | Where it appears | Style |
 |------|------------------|--------|
 | **Pinned Gist** (like [productive-box](https://github.com/maxam2017/productive-box)) | Profile **Pins** | ASCII / text card |
-| **SVG card** | Profile **README** | Full-color 600×300 image |
+| **SVG card** | Profile **README** | Full-color image (default **360×192**) |
 
 **Live SVG demo:** [https://github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
 
 ---
 
-## 1) Pin a Zodiac Gist (recommended for Pins)
+## What a Pin looks like
 
-Same idea as productive-box: a GitHub Action writes your card into a **public Gist**, then you **pin that Gist**.
+GitHub only shows about **5 lines** of a pinned Gist. Below is the full 12-sign gallery (pin + full gist) from the local preview:
 
-### Prep
+**[Gist pin preview — 12 signs (PDF)](docs/gist-pin-preview-12-signs.pdf)**
 
-1. Create a new **public** Gist: https://gist.github.com/  
-   - Add any filename (e.g. `zodiac.md`) and some placeholder text  
-   - Create public gist  
-   - Copy the Gist ID from the URL  
-     `https://gist.github.com/seuthootDev/`**`GIST_ID`**
-2. Create a token with the **`gist`** scope: https://github.com/settings/tokens/new  
-   - (`repo` is not required for this Action)
+Also available as HTML (download / open locally): [docs/gist-pin-preview.html](docs/gist-pin-preview.html)
 
-### Setup in this repo
+Example pin body (Taurus):
 
-1. Open **Settings → Secrets and variables → Actions**
-2. Add **Repository secrets**:
+```text
+♉ TAURUS · Builder                        ✦
+✨ JUNG SEUNGHOON · Full-Stack Dev           \
+⭐   4  📦  36  👥   0                  ✦-----✦
+Consistency ███████████░  95%             \
+Builder     █████████░░░  75%              ✦--✦
+```
+
+Open the Gist itself to see the **full** card (description + tagline under the pin fold).
+
+---
+
+## 1) Pin a Zodiac Gist — fork this repo
+
+Same idea as productive-box: **fork → Action updates your Gist → pin that Gist**.
+
+> You do **not** need your own Vercel for the Pin / Gist path.  
+> The Action runs on **your fork** (GitHub-hosted) and only needs a Gist + token.
+
+### 1. Fork
+
+Fork [seuthootDev/github-readme-zodiac](https://github.com/seuthootDev/github-readme-zodiac).
+
+### 2. Create a public Gist
+
+1. https://gist.github.com/  
+2. Filename e.g. `zodiac.md`, any placeholder text  
+3. **Create public gist**  
+4. Copy the Gist ID:  
+   `https://gist.github.com/YOU/`**`GIST_ID`**
+
+### 3. Create a token
+
+https://github.com/settings/tokens/new → enable **`gist`** scope only.
+
+### 4. Add secrets on **your fork**
+
+On **your fork**: Settings → Secrets and variables → Actions
 
 | Secret | Value |
 |--------|--------|
-| `GH_TOKEN` | Personal access token (`gist` scope) |
+| `GH_TOKEN` | PAT with `gist` scope |
 | `GIST_ID` | Gist ID from the URL |
 
-3. (Optional) **Variables** — same Settings page → **Variables** tab → **New repository variable**:
+Optional **Variables**:
 
 | Variable | Value | Notes |
 |----------|--------|--------|
-| `USERNAME` | `seuthootDev` | default: token owner |
-| `BIRTHDATE` | `YYYY-MM-DD` | e.g. `1998-11-05` → real zodiac sign |
-| `SIGN` | `scorpio` | forces a sign (overrides birthdate) |
-| `NAME` | display name | overrides GitHub name |
-| `ROLE` | `Backend Developer` | overrides auto role |
+| `USERNAME` | your GitHub login | default: token owner |
+| `BIRTHDATE` | `YYYY-MM-DD` | maps to zodiac sign |
+| `SIGN` | `scorpio` | forces a sign |
+| `NAME` | display name | optional override |
+| `ROLE` | `Backend Dev` | optional override |
 
-**Birthday:** add variable `BIRTHDATE` = `YYYY-MM-DD`, then re-run the workflow. Do **not** put the birthday in a Secret unless you want it hidden from the variables UI — Variables are fine for this.
+### 5. Run the Action
 
-4. **Actions** tab → enable workflows if needed  
-5. Run **Update Zodiac Gist** → **Run workflow**  
-6. [Pin the Gist on your profile](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/pinning-items-to-your-profile)
+1. On your fork: **Actions** → enable workflows if prompted  
+2. **Update Zodiac Gist** → **Run workflow**  
+3. [Pin the Gist on your profile](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/pinning-items-to-your-profile)
 
-The workflow also runs daily at 00:00 UTC.
+The workflow also runs on every push to `main` and daily at 00:00 UTC.
 
-### Use from another repo
+### Fork vs Vercel (quick FAQ)
 
-```yaml
-name: Update Zodiac Gist
-on:
-  schedule:
-    - cron: "0 0 * * *"
-  workflow_dispatch:
+| Feature | Uses your fork’s Action? | Uses [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)? |
+|---------|--------------------------|----------------------------------------------------------------------------------|
+| **Pinned Gist** | Yes | No |
+| **SVG in README** | No | Yes (shared public instance), unless you deploy your own |
 
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: seuthootDev/github-readme-zodiac@main
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GIST_ID: ${{ secrets.GIST_ID }}
-          USERNAME: ${{ vars.USERNAME }}
-          BIRTHDATE: ${{ vars.BIRTHDATE }}
-          SIGN: ${{ vars.SIGN }}
-```
-
-### Local gist update
-
-```bash
-set GH_TOKEN=ghp_xxx
-set GIST_ID=your_gist_id
-set USERNAME=seuthootDev
-node scripts/update-gist.js
-```
+So: **forking for Pins does not put load on the Vercel app.**  
+SVG embeds that point at `github-readme-zodiac.vercel.app` do share that instance (GitHub API rate limits / traffic). That’s fine for now; heavy use can later move to self-hosted Vercel + `GITHUB_TOKEN`.
 
 ---
 
@@ -104,7 +113,7 @@ node scripts/update-gist.js
 
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
 
-### All 12 signs
+### All 12 signs (SVG)
 
 <p align="center">
   <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aries" width="49%" alt="Aries" />
@@ -132,39 +141,35 @@ node scripts/update-gist.js
 | `role` | Override role |
 | `width` | Display width in px (`240`–`900`, default **`360`**) |
 
-Default card renders at **360×192** (scaled from a 600×320 artboard). Override anytime:
-
 ```md
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
 
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480)
-
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=560)
 ```
 
 ---
 
 ## How it works
 
-**SVG**
+**Pinned Gist (fork)**
+
+```
+Your fork → GitHub Action
+  → GitHub API (your profile)
+  → Zodiac + stats
+  → PATCH your Gist
+  → Pin on your profile
+```
+
+**SVG (shared or self-hosted)**
 
 ```
 README image URL → Vercel /api/card → GitHub API → Zodiac + stats → SVG
 ```
 
-**Pinned Gist**
-
-```
-GitHub Action (schedule)
-  → GitHub API (profile + repos)
-  → Zodiac + stats
-  → PATCH gist
-  → Pin gist on profile
-```
-
 Stats are playful mappings from public GitHub signals, not real astrology.
 
-## Local development (SVG preview)
+## Local development
 
 ```bash
 npm start
@@ -172,24 +177,22 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000)
 
-## Deploy (SVG)
-
-Hosted on Vercel: [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
-
-Optional: `GITHUB_TOKEN` on Vercel for higher API rate limits.
+```bash
+node scripts/preview-all-gists.js
+# → scripts/out/all-signs-gist-preview.html
+```
 
 ## Project layout
 
 ```
-action.yml                    Reusable Action entry
+action.yml
 .github/workflows/update-gist.yml
-scripts/update-gist.js        Gist updater
-src/gist/render.js            ASCII pin card
-api/card.js                   SVG serverless API
-api/profile.js
-src/data/zodiac.*
-src/lib/
-src/render/card.js
+docs/gist-pin-preview-12-signs.pdf
+docs/gist-pin-preview.html
+scripts/update-gist.js
+scripts/preview-all-gists.js
+src/gist/
+api/card.js
 public/index.html
 ```
 
@@ -199,5 +202,6 @@ public/index.html
 - [x] Birthdate mapping + GitHub REST stats
 - [x] Editable name / role (auto by default)
 - [x] Pinned Gist Action (productive-box style)
+- [x] Fork-based pin setup guide
 - [ ] GraphQL contributions / streak
-- [ ] Richer theme params & animation presets
+- [ ] Optional self-host docs for high SVG traffic
