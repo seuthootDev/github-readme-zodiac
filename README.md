@@ -39,15 +39,17 @@ Same idea as productive-box: a GitHub Action writes your card into a **public Gi
 | `GH_TOKEN` | Personal access token (`gist` scope) |
 | `GIST_ID` | Gist ID from the URL |
 
-3. (Optional) **Variables**:
+3. (Optional) **Variables** — same Settings page → **Variables** tab → **New repository variable**:
 
-| Variable | Value |
-|----------|--------|
-| `USERNAME` | GitHub username (default: token owner) |
-| `BIRTHDATE` | `YYYY-MM-DD` |
-| `SIGN` | Force sign: `aries` … `pisces` |
-| `NAME` | Override display name |
-| `ROLE` | Override role |
+| Variable | Value | Notes |
+|----------|--------|--------|
+| `USERNAME` | `seuthootDev` | default: token owner |
+| `BIRTHDATE` | `YYYY-MM-DD` | e.g. `1998-11-05` → real zodiac sign |
+| `SIGN` | `scorpio` | forces a sign (overrides birthdate) |
+| `NAME` | display name | overrides GitHub name |
+| `ROLE` | `Backend Developer` | overrides auto role |
+
+**Birthday:** add variable `BIRTHDATE` = `YYYY-MM-DD`, then re-run the workflow. Do **not** put the birthday in a Secret unless you want it hidden from the variables UI — Variables are fine for this.
 
 4. **Actions** tab → enable workflows if needed  
 5. Run **Update Zodiac Gist** → **Run workflow**  
