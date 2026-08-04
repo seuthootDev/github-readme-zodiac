@@ -96,6 +96,65 @@ function renderStars(seed, color, count = 48) {
   return parts.join("");
 }
 
+/**
+ * Occasional shooting stars — deep background only (under stars + UI).
+ * Soft, short sky-band streaks so they don't compete with text.
+ */
+function renderShootingStars(seed, color, uid) {
+  const rand = seededRandom(`meteors-${seed}`);
+  const count = 2;
+  const parts = [
+    `<defs>
+      <linearGradient id="${uid}-meteor-core" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0"/>
+        <stop offset="40%" stop-color="${color}" stop-opacity="0.12"/>
+        <stop offset="80%" stop-color="#fff6e0" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.7"/>
+      </linearGradient>
+      <linearGradient id="${uid}-meteor-soft" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0"/>
+        <stop offset="60%" stop-color="${color}" stop-opacity="0.14"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.3"/>
+      </linearGradient>
+      <filter id="${uid}-meteor-glow" x="-80%" y="-80%" width="260%" height="260%">
+        <feGaussianBlur stdDeviation="1.2" result="b"/>
+        <feMerge>
+          <feMergeNode in="b"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>`,
+  ];
+  for (let i = 0; i < count; i++) {
+    // Soft background streak; path may cross the full card height.
+    const x0 = 260 + rand() * 300;
+    const y0 = -16 - rand() * 18;
+    const x1 = x0 - (180 + rand() * 160);
+    const y1 = y0 + (180 + rand() * 120);
+    const trail = 64 + rand() * 36;
+    const softW = 2.4 + rand() * 1.0;
+    const coreW = 0.8 + rand() * 0.35;
+    const angle = (Math.atan2(y1 - y0, x1 - x0) * 180) / Math.PI;
+    const cycle = (10 + rand() * 5).toFixed(1);
+    const begin = (1.2 + rand() * 6).toFixed(1);
+    const tEnd = 0.08;
+    const t = (-trail).toFixed(1);
+    // Peak opacity kept low so UI always wins visually.
+    parts.push(`
+    <g opacity="0">
+      <g transform="translate(${x0.toFixed(1)},${y0.toFixed(1)}) rotate(${angle.toFixed(1)})">
+        <path d="M0,0 L${t},${(-softW).toFixed(1)} L${t},${softW.toFixed(1)} Z" fill="url(#${uid}-meteor-soft)"/>
+        <path d="M0,0 L${t},${(-coreW).toFixed(1)} L${t},${coreW.toFixed(1)} Z" fill="url(#${uid}-meteor-core)"/>
+        <circle cx="0" cy="0" r="1.6" fill="#ffffff" opacity="0.75" filter="url(#${uid}-meteor-glow)"/>
+        <circle cx="0" cy="0" r="0.8" fill="#ffffff" opacity="0.85"/>
+      </g>
+      <animate attributeName="opacity" values="0;0.42;0.42;0;0" keyTimes="0;0.01;${tEnd};${(tEnd + 0.025).toFixed(3)};1" dur="${cycle}s" begin="${begin}s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0; ${(x1 - x0).toFixed(1)} ${(y1 - y0).toFixed(1)}; ${(x1 - x0).toFixed(1)} ${(y1 - y0).toFixed(1)}" keyTimes="0;${tEnd};1" dur="${cycle}s" begin="${begin}s" calcMode="spline" keySplines="0.15 0.05 0.35 1;0 0 1 1" repeatCount="indefinite"/>
+    </g>`);
+  }
+  return parts.join("");
+}
+
 /** Constellation art (name + stars) in the top-right, accent-masked. */
 function renderConstellation(zodiac, colors, uid) {
   const icon = constellationIcons[zodiac.id];
@@ -228,6 +287,7 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
   <g clip-path="url(#${uid}-clip)">
     <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#${uid}-bg)"/>
     <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#${uid}-glow)"/>
+    ${renderShootingStars(`${profile.username}-${zodiac.id}`, colors.star, uid)}
     ${renderStars(`${profile.username}-${zodiac.id}`, colors.star)}
 
     ${renderConstellation(zodiac, colors, uid)}
