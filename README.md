@@ -114,26 +114,26 @@ Also runs on every push to `main` and daily at 00:00 UTC.
 ### Demo
 
 ```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&v=2)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
 ```
 
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&v=2)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
 
 ### All 12 signs (SVG)
 
 <p align="center">
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aries&v=2" width="49%" alt="Aries" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=taurus&v=2" width="49%" alt="Taurus" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=gemini&v=2" width="49%" alt="Gemini" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=cancer&v=2" width="49%" alt="Cancer" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=leo&v=2" width="49%" alt="Leo" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=virgo&v=2" width="49%" alt="Virgo" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=libra&v=2" width="49%" alt="Libra" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=scorpio&v=2" width="49%" alt="Scorpio" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=sagittarius&v=2" width="49%" alt="Sagittarius" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=capricorn&v=2" width="49%" alt="Capricorn" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aquarius&v=2" width="49%" alt="Aquarius" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=pisces&v=2" width="49%" alt="Pisces" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aries" width="49%" alt="Aries" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=taurus" width="49%" alt="Taurus" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=gemini" width="49%" alt="Gemini" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=cancer" width="49%" alt="Cancer" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=leo" width="49%" alt="Leo" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=virgo" width="49%" alt="Virgo" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=libra" width="49%" alt="Libra" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=scorpio" width="49%" alt="Scorpio" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=sagittarius" width="49%" alt="Sagittarius" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=capricorn" width="49%" alt="Capricorn" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aquarius" width="49%" alt="Aquarius" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=pisces" width="49%" alt="Pisces" />
 </p>
 
 ### SVG options
@@ -148,9 +148,9 @@ Also runs on every push to `main` and daily at 00:00 UTC.
 | `width` | Display width in px (`240`–`900`, default **`360`**) |
 
 ```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&v=2)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
 
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480&v=2)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480)
 ```
 
 ---
