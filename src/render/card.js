@@ -3,6 +3,7 @@ import { seededRandom } from "../lib/zodiac.js";
 import signIcons from "../data/sign-icons.js";
 import signIconsLine from "../data/sign-icons-line.js";
 import constellationIcons from "../data/constellation-icons.js";
+import { EMBEDDED_FONT_CSS } from "../data/embedded-fonts.js";
 
 /** Design coordinate space (viewBox). Display size can be smaller via options. */
 const WIDTH = 600;
@@ -278,7 +279,7 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
       <rect width="${WIDTH}" height="${HEIGHT}" rx="16"/>
     </clipPath>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap');
+${EMBEDDED_FONT_CSS}
       .title { font-family: Cinzel, Georgia, serif; }
       .body { font-family: 'Source Serif 4', Georgia, serif; }
     </style>
