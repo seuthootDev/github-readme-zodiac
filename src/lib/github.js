@@ -30,27 +30,28 @@ async function gh(path) {
 
 function guessRole(languages) {
   const top = languages[0]?.name?.toLowerCase() ?? "";
+  // Short labels — pin/SVG both clip easily with long "…Developer" strings
   const map = {
-    python: "Backend Developer",
-    go: "Backend Developer",
-    rust: "Systems Developer",
-    java: "Backend Developer",
-    kotlin: "Mobile Developer",
-    swift: "Mobile Developer",
-    typescript: "Full-Stack Developer",
-    javascript: "Full-Stack Developer",
-    "c#": "Software Engineer",
-    "c++": "Systems Developer",
-    c: "Systems Developer",
-    php: "Web Developer",
-    ruby: "Web Developer",
-    dart: "App Developer",
-    html: "Frontend Developer",
-    css: "Frontend Developer",
-    shell: "DevOps Engineer",
-    dockerfile: "DevOps Engineer",
+    python: "Backend Dev",
+    go: "Backend Dev",
+    rust: "Systems Dev",
+    java: "Backend Dev",
+    kotlin: "Mobile Dev",
+    swift: "Mobile Dev",
+    typescript: "Full-Stack Dev",
+    javascript: "Full-Stack Dev",
+    "c#": "Software Eng",
+    "c++": "Systems Dev",
+    c: "Systems Dev",
+    php: "Web Dev",
+    ruby: "Web Dev",
+    dart: "App Dev",
+    html: "Frontend Dev",
+    css: "Frontend Dev",
+    shell: "DevOps",
+    dockerfile: "DevOps",
   };
-  return map[top] || "Software Developer";
+  return map[top] || "Software Dev";
 }
 
 export async function fetchGitHubProfile(username) {

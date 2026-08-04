@@ -65,14 +65,46 @@ function mergePinRows(leftLines, rightLines) {
   return out;
 }
 
+const ROLE_ABBR = {
+  "full-stack developer": "Full-Stack Dev",
+  "fullstack developer": "Full-Stack Dev",
+  "backend developer": "Backend Dev",
+  "frontend developer": "Frontend Dev",
+  "systems developer": "Systems Dev",
+  "mobile developer": "Mobile Dev",
+  "software engineer": "Software Eng",
+  "software developer": "Software Dev",
+  "web developer": "Web Dev",
+  "app developer": "App Dev",
+  "devops engineer": "DevOps",
+};
+
+/** Prefer real abbreviations over mid-word clipping ("Full-Stack Develo"). */
+function abbreviateRole(role) {
+  const raw = String(role || "Software Dev").trim();
+  const mapped = ROLE_ABBR[raw.toLowerCase()];
+  if (mapped) return mapped;
+  return raw
+    .replace(/\bFull[-\s]?Stack\b/gi, "Full-Stack")
+    .replace(/\bDeveloper\b/gi, "Dev")
+    .replace(/\bEngineer\b/gi, "Eng");
+}
+
+function abbreviateTitle(title) {
+  // Drop leading "The " so pin titles fit: "The Builder" → "Builder"
+  return String(title || "").replace(/^The\s+/i, "");
+}
+
 /**
  * Pin-first card: colorful left column + stable ASCII constellation on the right.
  * Display-width padding keeps the star map from drifting when stats change.
+ * Languages stay below the pin fold (full names) — not squeezed into 5 lines.
  */
 export function renderGistCard({ profile, zodiac, stats }) {
   const displayStats = pickDisplayStats(stats, zodiac, 3);
   const displayName = profile.name || profile.username;
-  const role = profile.role || "Software Developer";
+  const role = abbreviateRole(profile.role || "Software Dev");
+  const title = abbreviateTitle(zodiac.title);
   const langs = (profile.languages || [])
     .slice(0, 3)
     .map((l) => l.name)
@@ -81,7 +113,7 @@ export function renderGistCard({ profile, zodiac, stats }) {
   const constellation = getAsciiConstellation(zodiac.id);
 
   const pinLeft = [
-    `${zodiac.symbol} ${zodiac.sign.toUpperCase()} · ${zodiac.title}`,
+    `${zodiac.symbol} ${zodiac.sign.toUpperCase()} · ${title}`,
     `✨ ${displayName} · ${role}`,
     `⭐${num(profile.stars)}  📦${num(profile.publicRepos)}  👥${num(profile.followers)}`,
     `${displayStats[0].label.slice(0, 11).padEnd(11)} ${bar(displayStats[0].value)} ${num(displayStats[0].value, 3)}%`,
@@ -91,7 +123,8 @@ export function renderGistCard({ profile, zodiac, stats }) {
   const lines = [...mergePinRows(pinLeft, constellation)];
 
   lines.push("────────────────────────────────────");
-  lines.push(`${zodiac.symbol} ${zodiac.element} · ${zodiac.planet}${langs ? `  ·  ${langs}` : ""}`);
+  lines.push(`${zodiac.symbol} ${zodiac.element} · ${zodiac.planet}`);
+  if (langs) lines.push(langs);
   if (displayStats[2]) {
     lines.push(
       `${displayStats[2].label.slice(0, 11).padEnd(11)} ${bar(displayStats[2].value)} ${num(displayStats[2].value, 3)}%`,
