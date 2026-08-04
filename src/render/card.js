@@ -46,21 +46,51 @@ function wrapText(text, maxChars, maxLines = 3) {
   return lines;
 }
 
+function mixTowardBlack(hex, amount) {
+  const n = String(hex || "").replace("#", "");
+  if (n.length !== 6) return hex;
+  const t = clamp(amount, 0, 1);
+  const mix = (ch) => Math.round(parseInt(ch, 16) * (1 - t));
+  const r = mix(n.slice(0, 2));
+  const g = mix(n.slice(2, 4));
+  const b = mix(n.slice(4, 6));
+  return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
+}
+
+function applyDarkerColors(colors) {
+  return {
+    ...colors,
+    bg0: mixTowardBlack(colors.bg0, 0.38),
+    bg1: mixTowardBlack(colors.bg1, 0.42),
+    star: mixTowardBlack(colors.star, 0.12),
+    muted: mixTowardBlack(colors.muted, 0.08),
+  };
+}
+
+/** 4-point needle sparkle centered at (x, y). */
+function needleStarPath(x, y, len) {
+  const thick = Math.max(0.12, len * 0.11);
+  const xf = x.toFixed(1);
+  const yf = y.toFixed(1);
+  return `M${xf},${(y - len).toFixed(1)} L${(x + thick).toFixed(1)},${yf} L${xf},${(y + len).toFixed(1)} L${(x - thick).toFixed(1)},${yf} Z M${(x - len).toFixed(1)},${yf} L${xf},${(y - thick).toFixed(1)} L${(x + len).toFixed(1)},${yf} L${xf},${(y + thick).toFixed(1)} Z`;
+}
+
 function renderStars(seed, color, count = 48) {
   const rand = seededRandom(`stars-${seed}`);
   const parts = [];
   for (let i = 0; i < count; i++) {
     const x = rand() * WIDTH;
     const y = rand() * HEIGHT;
-    const r = 0.4 + rand() * 1.4;
+    const len = 1.1 + rand() * 2.4;
+    const rot = (rand() * 360).toFixed(1);
     const base = 0.25 + rand() * 0.55;
     const peak = Math.min(1, base + 0.25 + rand() * 0.3);
     const dur = (1.8 + rand() * 3.2).toFixed(2);
     const begin = (rand() * 4).toFixed(2);
     parts.push(
-      `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="${color}" opacity="${base.toFixed(2)}">
+      `<path d="${needleStarPath(x, y, len)}" fill="${color}" opacity="${base.toFixed(2)}" transform="rotate(${rot} ${x.toFixed(1)} ${y.toFixed(1)})">
         <animate attributeName="opacity" values="${base.toFixed(2)};${peak.toFixed(2)};${(base * 0.55).toFixed(2)};${base.toFixed(2)}" dur="${dur}s" begin="${begin}s" repeatCount="indefinite"/>
-      </circle>`,
+      </path>`,
     );
   }
   return parts.join("");
@@ -158,7 +188,7 @@ function renderSignTitle(zodiac, colors, uid) {
  * @param {{ profile: object, zodiac: object, stats: object, meta?: { source?: string, width?: number } }} input
  */
 export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
-  const colors = zodiac.colors;
+  const colors = applyDarkerColors(zodiac.colors);
   const displayStats = pickDisplayStats(stats, zodiac, 3);
   const displayName = profile.name || profile.username;
   const role = profile.role || "Software Developer";
@@ -182,7 +212,7 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
       <stop offset="100%" stop-color="${colors.bg1}"/>
     </linearGradient>
     <radialGradient id="${uid}-glow" cx="72%" cy="28%" r="45%">
-      <stop offset="0%" stop-color="${colors.accent}" stop-opacity="0.35"/>
+      <stop offset="0%" stop-color="${colors.accent}" stop-opacity="0.2"/>
       <stop offset="100%" stop-color="${colors.bg0}" stop-opacity="0"/>
     </radialGradient>
     <clipPath id="${uid}-clip">
