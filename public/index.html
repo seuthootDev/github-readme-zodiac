@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -197,8 +197,13 @@
         <input
           id="birthdate"
           name="birthdate"
-          type="date"
-          title="Optional birthdate"
+          type="text"
+          inputmode="numeric"
+          placeholder="YYYY-MM-DD"
+          pattern="\d{4}-\d{2}-\d{2}"
+          maxlength="10"
+          title="Optional birthdate (YYYY-MM-DD)"
+          autocomplete="bday"
         />
         <input
           id="name"
@@ -243,6 +248,16 @@
       /** Auto defaults from GitHub; used to decide whether to bake overrides into the embed URL */
       let auto = { name: "", role: "" };
 
+      /** Accept YYYY-MM-DD only (English numeric form). Empty is fine. */
+      function normalizeBirthdate(value) {
+        const raw = String(value || "").trim();
+        if (!raw) return "";
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+          throw new Error("Birthdate must be YYYY-MM-DD");
+        }
+        return raw;
+      }
+
       function buildCardPath({ username, birthdate, name, role }) {
         const params = new URLSearchParams({ username });
         if (birthdate) params.set("birthdate", birthdate);
@@ -276,7 +291,8 @@
 
         submitBtn.disabled = true;
         try {
-          const data = await loadDefaults(username, birthInput.value || "");
+          const birthdate = normalizeBirthdate(birthInput.value);
+          const data = await loadDefaults(username, birthdate);
           auto = { name: data.name || data.username, role: data.role || "" };
 
           // Prefill editable fields with auto estimates (user can change after)
@@ -285,7 +301,7 @@
 
           renderPreview({
             username: data.username,
-            birthdate: birthInput.value || "",
+            birthdate,
             name: nameInput.value.trim(),
             role: roleInput.value.trim(),
           });
@@ -300,12 +316,16 @@
       function onEdit() {
         const username = usernameInput.value.trim();
         if (!username || !auto.role) return;
-        renderPreview({
-          username,
-          birthdate: birthInput.value || "",
-          name: nameInput.value.trim(),
-          role: roleInput.value.trim(),
-        });
+        try {
+          renderPreview({
+            username,
+            birthdate: normalizeBirthdate(birthInput.value),
+            name: nameInput.value.trim(),
+            role: roleInput.value.trim(),
+          });
+        } catch (err) {
+          md.textContent = `Error: ${err.message}`;
+        }
       }
 
       form.addEventListener("submit", (e) => {
