@@ -7,6 +7,8 @@ Zodiac-themed profile cards from your GitHub activity.
 
 > Your coding personality written in the stars
 
+Sister project (Asian zodiac): [github-readme-chinese-zodiac](https://github.com/seuthootDev/github-readme-chinese-zodiac)
+
 Two ways to show it on your profile:
 
 | Mode | Where it appears | Style |
