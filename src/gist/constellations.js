@@ -1,7 +1,7 @@
-/✦✦
- ✦ Per-sign ASCII constellations for pinned Gist cards.
- ✦ Pure ASCII (✦ / \\ - |) so GitHub gist monospace stays aligned.
- ✦/
+/**
+ * Per-sign constellations for pinned Gist cards.
+ * Stars use ✦; connectors stay ASCII so maps keep a stable shape.
+ */
 export const ASCII_CONSTELLATIONS = {
   aries: [
     "      ✦",
@@ -48,7 +48,7 @@ export const ASCII_CONSTELLATIONS = {
   libra: [
     "      ✦",
     "     / \\",
-    "  ✦-✦-✦ ✦-✦",
+    "  ✦-✦---✦-✦",
     "     \\ /",
     "      ✦",
   ],
