@@ -1,37 +1,42 @@
-import { pickDisplayStats, STAT_LABELS } from "../lib/stats.js";
+import { pickDisplayStats } from "../lib/stats.js";
 import { getAsciiConstellation } from "./constellations.js";
 
-function bar(value, width = 18) {
+const LEFT_WIDTH = 34;
+const BAR_WIDTH = 12;
+
+/** ASCII bar — avoid █/░ width quirks in gist monospace. */
+function bar(value, width = BAR_WIDTH) {
   const filled = Math.max(0, Math.min(width, Math.round((value / 100) * width)));
-  return `${"█".repeat(filled)}${"░".repeat(width - filled)}`;
+  return `${"#".repeat(filled)}${"-".repeat(width - filled)}`;
 }
 
-function padLabel(label, len = 11) {
-  return label.length >= len ? label.slice(0, len) : label.padEnd(len, " ");
+function clipPad(str, width) {
+  const s = String(str ?? "");
+  if (s.length === width) return s;
+  if (s.length > width) return s.slice(0, width);
+  return s + " ".repeat(width - s.length);
 }
 
-function wrapLine(text, width = 40) {
-  const words = String(text || "").split(/\s+/).filter(Boolean);
-  if (!words.length) return [];
-  const lines = [];
-  let current = "";
-  for (const word of words) {
-    const next = current ? `${current} ${word}` : word;
-    if (next.length > width && current) {
-      lines.push(current);
-      current = word;
-    } else {
-      current = next;
-    }
+function num(n, width = 4) {
+  return String(n ?? 0).padStart(width, " ");
+}
+
+function mergePinRows(leftLines, rightLines) {
+  const rows = Math.max(leftLines.length, rightLines.length, 5);
+  const out = [];
+  for (let i = 0; i < rows; i++) {
+    const left = clipPad(leftLines[i] || "", LEFT_WIDTH);
+    const right = rightLines[i] || "";
+    out.push(right ? `${left}  ${right}` : left.trimEnd());
   }
-  if (current) lines.push(current);
-  return lines;
+  return out;
 }
 
 /**
- * Text card for a pinned Gist.
- * Constellation is its own block (not side-by-side) so alignment never drifts
- * from emoji / CJK / wide unicode in neighboring columns.
+ * Pin-first card:
+ * - GitHub pin ~5 lines → those rows are fixed-width ASCII + constellation
+ * - Numbers are padded so *4 vs *400 never shifts the star map
+ * - Gist filename still carries the unicode sign for pin title identity
  */
 export function renderGistCard({ profile, zodiac, stats }) {
   const displayStats = pickDisplayStats(stats, zodiac, 3);
@@ -40,46 +45,50 @@ export function renderGistCard({ profile, zodiac, stats }) {
   const langs = (profile.languages || [])
     .slice(0, 3)
     .map((l) => l.name)
-    .join(" · ");
+    .join("/");
 
   const constellation = getAsciiConstellation(zodiac.id);
 
-  const lines = [
-    `${zodiac.symbol} ${zodiac.sign.toUpperCase()} · ${zodiac.title}`,
-    `${zodiac.element} · ${zodiac.planet}`,
-    "",
-    ...constellation,
-    "",
-    `${displayName} · ${role}`,
-    `*${profile.stars ?? 0}  #${profile.publicRepos ?? 0} repos  ~${profile.followers ?? 0} followers`,
+  // Exactly 5 pin rows — identity + map always visible together
+  const pinLeft = [
+    // ASCII sign name (unicode symbol lives in gist filename / pin title)
+    clipPad(`${zodiac.sign.toUpperCase()} · ${zodiac.title}`, LEFT_WIDTH),
+    clipPad(`${displayName} · ${role}`, LEFT_WIDTH),
+    clipPad(
+      `*${num(profile.stars)} #${num(profile.publicRepos)} ~${num(profile.followers)} ${langs}`,
+      LEFT_WIDTH,
+    ),
+    clipPad(
+      `${displayStats[0].label.slice(0, 11).padEnd(11)} ${bar(displayStats[0].value)} ${num(displayStats[0].value, 3)}%`,
+      LEFT_WIDTH,
+    ),
+    clipPad(
+      `${displayStats[1].label.slice(0, 11).padEnd(11)} ${bar(displayStats[1].value)} ${num(displayStats[1].value, 3)}%`,
+      LEFT_WIDTH,
+    ),
   ];
 
-  if (langs) lines.push(langs);
+  const lines = [...mergePinRows(pinLeft, constellation)];
 
-  lines.push("");
-  for (const stat of displayStats) {
+  // Full gist body (below the fold of the pin)
+  lines.push("------------------------------------");
+  lines.push(`${zodiac.symbol} ${zodiac.element} · ${zodiac.planet}`);
+  if (displayStats[2]) {
     lines.push(
-      `${padLabel(stat.label)} ${bar(stat.value)} ${stat.value}%`,
+      `${displayStats[2].label.slice(0, 11).padEnd(11)} ${bar(displayStats[2].value)} ${num(displayStats[2].value, 3)}%`,
     );
   }
-
-  const extraKeys = Object.keys(STAT_LABELS).filter(
-    (k) => !displayStats.some((s) => s.key === k),
-  );
-  for (const key of extraKeys.slice(0, 2)) {
-    lines.push(
-      `${padLabel(STAT_LABELS[key])} ${bar(stats[key] ?? 0)} ${stats[key] ?? 0}%`,
-    );
-  }
-
   if (zodiac.description) {
     lines.push("");
-    lines.push(...wrapLine(zodiac.description, 40));
+    lines.push(zodiac.description);
   }
+  lines.push("");
+  lines.push("Your coding personality written in the stars");
 
   return lines.join("\n");
 }
 
+/** Pin title identity — unicode sign shows here even if body is ASCII. */
 export function gistFilename(zodiac) {
   return `${zodiac.symbol} ${zodiac.sign}.md`;
 }
