@@ -11,7 +11,8 @@
     "gist": "node scripts/update-gist.js",
     "extract-signs": "python scripts/extract-zodiac-signs.py",
     "extract-signs:glyph": "python scripts/extract-zodiac-signs.py glyph",
-    "extract-signs:line": "python scripts/extract-zodiac-signs.py line"
+    "extract-signs:line": "python scripts/extract-zodiac-signs.py line",
+    "extract-signs:constellation": "python scripts/extract-zodiac-signs.py constellation"
   },
   "engines": {
     "node": ">=18"

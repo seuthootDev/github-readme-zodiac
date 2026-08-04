@@ -2,16 +2,19 @@
 """Split zodiac sheets into transparent PNGs and emit JS data modules.
 
 Packs (source sheets are not committed — keep them locally to re-extract):
-  glyph — 42Z_zodiac8.jpg → assets/signs + src/data/sign-icons.js
-  line  — 5561119.jpg     → assets/signs-line + src/data/sign-icons-line.js
+  glyph         — 42Z_zodiac8.jpg → assets/signs + src/data/sign-icons.js
+  line          — 5561119.jpg     → assets/signs-line + src/data/sign-icons-line.js
+  constellation — 7927.jpg        → assets/constellations + src/data/constellation-icons.js
 
 Licenses:
   docs/license-zodiac-white-signs-set-67006418.pdf
   docs/license-flat-zodiac-sign-collection-15112717.pdf
+  docs/license-various-zodiac-signs-flat-icon-set-9652101.pdf
 
 Usage:
   python scripts/extract-zodiac-signs.py           # all packs
   python scripts/extract-zodiac-signs.py glyph
+  python scripts/extract-zodiac-signs.py constellation
 """
 
 from __future__ import annotations
@@ -75,6 +78,22 @@ def white_line_to_transparent(rgb: Image.Image, floor: int = 40, span: int = 80)
     a = np.array(rgb.convert("RGB"))
     br = a.mean(axis=2)
     alpha = np.clip((br - floor) * (255 / span), 0, 255).astype(np.uint8)
+    rgba = np.zeros((a.shape[0], a.shape[1], 4), dtype=np.uint8)
+    rgba[..., 0] = 255
+    rgba[..., 1] = 255
+    rgba[..., 2] = 255
+    rgba[..., 3] = alpha
+    return Image.fromarray(rgba, "RGBA")
+
+
+def dark_ink_to_transparent(
+    rgb: Image.Image, ceiling: int = 225, floor: int = 135
+) -> Image.Image:
+    """Pale-bg slate ink → white silhouette with alpha (for SVG accent masks)."""
+    a = np.array(rgb.convert("RGB"))
+    br = a.mean(axis=2)
+    span = max(1, ceiling - floor)
+    alpha = np.clip((ceiling - br) * (255 / span), 0, 255).astype(np.uint8)
     rgba = np.zeros((a.shape[0], a.shape[1], 4), dtype=np.uint8)
     rgba[..., 0] = 255
     rgba[..., 1] = 255
@@ -188,9 +207,54 @@ def extract_line() -> None:
     )
 
 
+# ── constellation (7927 3×4, labels kept; sheet order ≠ calendar order) ─
+
+# Row-major layout on 7927.jpg (not aries→pisces).
+CONSTELLATION_GRID = [
+    ["capricorn", "scorpio", "gemini", "sagittarius"],
+    ["pisces", "leo", "taurus", "libra"],
+    ["virgo", "aries", "aquarius", "cancer"],
+]
+
+
+def extract_constellation() -> None:
+    print("pack: constellation")
+    source = ROOT / "7927.jpg"
+    if not source.exists():
+        raise SystemExit(f"Missing {source.name}")
+    im = Image.open(source).convert("RGB")
+    bright = np.array(im).mean(axis=2)
+    ink = bright < 200
+    gx0, gy0, gx1, gy1 = tight_on_mask(ink, pad=80)
+    # Equal 4×3 cells over the content bbox (names stay with each sign).
+    cols, rows = 4, 3
+    cw = (gx1 - gx0) / cols
+    ch = (gy1 - gy0) / rows
+    images: dict[str, Image.Image] = {}
+
+    for r, row_names in enumerate(CONSTELLATION_GRID):
+        for c, name in enumerate(row_names):
+            x0 = int(gx0 + c * cw)
+            y0 = int(gy0 + r * ch)
+            x1 = int(gx0 + (c + 1) * cw)
+            y1 = int(gy0 + (r + 1) * ch)
+            sub = ink[y0:y1, x0:x1]
+            tx0, ty0, tx1, ty1 = tight_on_mask(sub, pad=36)
+            crop = im.crop((x0 + tx0, y0 + ty0, x0 + tx1, y0 + ty1))
+            images[name] = to_square(dark_ink_to_transparent(crop), margin=0.04)
+
+    write_pack(
+        ROOT / "assets" / "constellations",
+        ROOT / "src" / "data" / "constellation-icons.js",
+        images,
+        "constellation",
+    )
+
+
 PACKS = {
     "glyph": extract_glyph,
     "line": extract_line,
+    "constellation": extract_constellation,
 }
 
 

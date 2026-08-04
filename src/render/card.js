@@ -2,6 +2,7 @@ import { pickDisplayStats } from "../lib/stats.js";
 import { seededRandom } from "../lib/zodiac.js";
 import signIcons from "../data/sign-icons.js";
 import signIconsLine from "../data/sign-icons-line.js";
+import constellationIcons from "../data/constellation-icons.js";
 
 /** Design coordinate space (viewBox). Display size can be smaller via options. */
 const WIDTH = 600;
@@ -65,35 +66,21 @@ function renderStars(seed, color, count = 48) {
   return parts.join("");
 }
 
-function renderConstellation(points, colors) {
-  if (!points?.length) return "";
-  const lines = [];
-  for (let i = 0; i < points.length - 1; i++) {
-    const [x1, y1] = points[i];
-    const [x2, y2] = points[i + 1];
-    lines.push(
-      `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${colors.accent}" stroke-opacity="0.55" stroke-width="1.2"/>`,
-    );
-  }
-  if (points.length > 3) {
-    const [x1, y1] = points[points.length - 1];
-    const [x2, y2] = points[0];
-    lines.push(
-      `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${colors.accent}" stroke-opacity="0.28" stroke-width="1"/>`,
-    );
-  }
-  const nodes = points
-    .map(([x, y], i) => {
-      const r = i === 0 ? 3.2 : 2.4;
-      const dur = (2.4 + (i % 4) * 0.55).toFixed(2);
-      const begin = (i * 0.35).toFixed(2);
-      return `<circle cx="${x}" cy="${y}" r="${r}" fill="${colors.star}" opacity="0.95">
-        <animate attributeName="opacity" values="0.55;1;0.7;0.95" dur="${dur}s" begin="${begin}s" repeatCount="indefinite"/>
-        <animate attributeName="r" values="${r};${(r * 1.25).toFixed(2)};${r}" dur="${dur}s" begin="${begin}s" repeatCount="indefinite"/>
-      </circle>`;
-    })
-    .join("");
-  return `${lines.join("")}${nodes}`;
+/** Constellation art (name + stars) in the top-right, accent-masked. */
+function renderConstellation(zodiac, colors, uid) {
+  const icon = constellationIcons[zodiac.id];
+  if (!icon) return "";
+  const w = 248;
+  const h = 132;
+  const x = 330;
+  const y = 8;
+  return `
+    <mask id="${uid}-const" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}">
+      <image href="${icon}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"/>
+    </mask>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${colors.accent}" opacity="0.88" mask="url(#${uid}-const)">
+      <animate attributeName="opacity" values="0.72;0.95;0.8;0.9;0.72" keyTimes="0;0.3;0.55;0.8;1" calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1" dur="7s" begin="0.2s" repeatCount="indefinite"/>
+    </rect>`;
 }
 
 function renderStatBars(displayStats, colors) {
@@ -213,9 +200,7 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
     <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#${uid}-glow)"/>
     ${renderStars(`${profile.username}-${zodiac.id}`, colors.star)}
 
-    <g transform="translate(310, 8)" opacity="0.95">
-      ${renderConstellation(zodiac.constellation, colors)}
-    </g>
+    ${renderConstellation(zodiac, colors, uid)}
 
     ${renderSignTitle(zodiac, colors, uid)}
     <text class="title" x="36" y="76" fill="${colors.text}" font-size="18" opacity="0.95">
