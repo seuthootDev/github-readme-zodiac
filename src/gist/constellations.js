@@ -1,88 +1,83 @@
 /** Per-sign ASCII constellations for pinned Gist cards (right column). */
 export const ASCII_CONSTELLATIONS = {
-  aries: [
+  "aries": [
     "      ✦",
     "     ╱ ╲",
     "    ✦───✦",
     "       ╲",
     "        ✦",
   ],
-  taurus: [
+  "taurus": [
     "        ✦",
     "          ╲",
     "    ✦──────✦",
     "       ╲",
     "        ✦────✦",
   ],
-  gemini: [
-    "    ✦     �    "    ✦──────✦",
-    "       ╲",
-    "        ✦────✦",
-  ],
-  gemini: [
+  "gemini": [
     "    ✦     ✦",
     "    │     │",
     "    ✦─────✦",
     "    │     │",
     "    ✦     ✦",
   ],
-  cancer: [
+  "cancer": [
     "     ✦───✦",
     "    ╱     ╲",
     "   ✦       ✦",
     "    ╲     ╱",
     "     ✦───✦",
   ],
-  leo: [
+  "leo": [
     "      ✦",
     "   ✦──┼──✦",
     "      │",
     "   ✦──✦──✦",
     "      ✦",
   ],
-  virgo: [
+  "virgo": [
     "   ✦───✦───✦",
     "       │",
     "       ✦───✦",
     "           │",
     "           ✦",
   ],
-  libra: [
+  "libra": [
     "      ✦",
     "     ╱ ╲",
     "  ✦─✦───✦─✦",
     "     ╲ ╱",
     "      ✦",
   ],
-  scorpio: [
+  "scorpio": [
     "  ✦───✦───✦",
     "          ╲",
     "           ✦",
     "          ╱",
     "      ✦──✦──✦",
   ],
-  sagittarius: [
+  "sagittarius": [
     "          ✦",
     "         ╱",
     "    ✦───✦",
     "   ╱",
     "  ✦────✦",
   ],
-  capricorn: [
+  "capricorn": [
     "   ✦────✦",
     "        ╲",
     "    ✦────✦",
     "   ╱",
     "  ✦───✦──✦",
   ],
-  aquarius: [
+  "aquarius": [
     "  ✦──✦  ✦──✦",
     "     ╲╱",
     "  ✦──✦  ✦──✦",
     "     ╲╱",
     "      ✦",
   ],
-  pisces: [
+  "pisces": [
     "  ✦───✦   ✦───✦",
     "      ╲   ╱",
     "       ✦─✦",
