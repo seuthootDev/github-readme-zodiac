@@ -1,5 +1,8 @@
 # github-readme-zodiac
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Contributing](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 Zodiac-themed profile cards from your GitHub activity.
 
 > Your coding personality written in the stars
@@ -195,6 +198,15 @@ src/gist/
 api/card.js
 public/index.html
 ```
+
+## Contributing
+
+New designs, card copy, sign-flavored roles, pin layouts — **ideas are welcome anytime.**  
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## License
+
+[MIT](LICENSE) © seuthootDev
 
 ## Roadmap
 

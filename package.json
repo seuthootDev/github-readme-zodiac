@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "GitHub activity → Zodiac SVG cards + pinned Gist Action",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "start": "node scripts/local-server.js",
