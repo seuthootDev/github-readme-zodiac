@@ -1,58 +1,71 @@
 # github-readme-zodiac
 
-GitHub 활동 데이터를 별자리 테마 SVG 카드로 보여 주는 README 장식 카드입니다.
+Zodiac-themed SVG profile cards generated from your GitHub activity — made for README embeds.
 
 > Your coding personality written in the stars
 
-## Quick start (local)
+**Live demo:** [https://github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
 
-```bash
-npm install
-npm start
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
-Card API:
-
-```
-http://localhost:3000/api/card?username=octocat
-http://localhost:3000/api/card?username=octocat&birthdate=1998-11-05
-http://localhost:3000/card/octocat.svg   # rewrite after Vercel deploy
-```
-
-## Deploy (Vercel)
-
-1. Push this repo to GitHub
-2. Import on [vercel.com](https://vercel.com)
-3. (Optional) set env `GITHUB_TOKEN` for higher API rate limits
-4. Use your deployment URL in README:
+## Demo
 
 ```md
-![Developer Zodiac](https://YOUR_DOMAIN/api/card?username=YOUR_USERNAME)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
 ```
 
-Optional birthdate (YYYY-MM-DD):
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
+
+## All 12 signs
+
+Force a sign with `&sign=` (demo username: `seuthootDev`):
+
+<p align="center">
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aries" width="49%" alt="Aries" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=taurus" width="49%" alt="Taurus" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=gemini" width="49%" alt="Gemini" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=cancer" width="49%" alt="Cancer" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=leo" width="49%" alt="Leo" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=virgo" width="49%" alt="Virgo" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=libra" width="49%" alt="Libra" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=scorpio" width="49%" alt="Scorpio" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=sagittarius" width="49%" alt="Sagittarius" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=capricorn" width="49%" alt="Capricorn" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aquarius" width="49%" alt="Aquarius" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=pisces" width="49%" alt="Pisces" />
+</p>
+
+## Usage
+
+Add this to your README (replace the username):
 
 ```md
-![Developer Zodiac](https://YOUR_DOMAIN/api/card?username=YOUR_USERNAME&birthdate=1998-11-05)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=YOUR_USERNAME)
 ```
 
-Force a sign:
+### Options
+
+| Param | Description |
+|-------|-------------|
+| `username` | GitHub username (**required**) |
+| `birthdate` | `YYYY-MM-DD` — maps to a tropical zodiac sign |
+| `sign` | Force a sign: `aries` … `pisces` |
+| `name` | Override display name (auto from GitHub by default) |
+| `role` | Override role (auto-guessed from top languages by default) |
+
+Examples:
 
 ```md
-![Developer Zodiac](https://YOUR_DOMAIN/api/card?username=YOUR_USERNAME&sign=scorpio)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&birthdate=1998-11-05)
+
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=scorpio)
+
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&name=Seunghoon&role=Backend%20Developer)
 ```
 
-Display name / role default to GitHub-based auto estimates. Override only when you want:
+Pretty path (same card):
 
 ```md
-![Developer Zodiac](https://YOUR_DOMAIN/api/card?username=YOUR_USERNAME&name=Seunghoon&role=Backend%20Developer)
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/card/seuthootDev)
 ```
-
-Preview page flow: Generate → auto-fill name/role → edit if needed → copy README markdown (overrides appear in the URL only when changed).
-
-Stat **bars shown** follow each zodiac (e.g. Scorpio → Debugger / Explorer / Consistency). Values still come from GitHub activity.
 
 ## How it works
 
@@ -66,22 +79,45 @@ README image URL
 
 - Birthdate provided → tropical zodiac sign
 - No birthdate → deterministic sign from username hash
-- Stats (Consistency / Explorer / Builder / …) are playful mappings from public GitHub signals, not real astrology
+- Stat **bars shown** follow each sign (e.g. Scorpio → Debugger / Explorer / Consistency)
+- Stat **values** come from public GitHub signals (playful, not real astrology)
+- Name / role default to auto estimates; pass `name` / `role` only to override
+
+## Local development
+
+```bash
+npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000)
+
+```
+http://localhost:3000/api/card?username=seuthootDev
+http://localhost:3000/api/card?username=seuthootDev&sign=leo
+```
+
+## Deploy
+
+This project is deployed on Vercel: [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
+
+Optional env var: `GITHUB_TOKEN` — raises GitHub API rate limits (60/hr → 5000/hr). Not required for a basic deploy.
 
 ## Project layout
 
 ```
-api/card.js          Vercel serverless entry
-src/data/zodiac.json 12 signs + palettes
-src/lib/             github / zodiac / stats
-src/render/card.js   600×300 SVG renderer
-public/index.html    preview landing
+api/card.js           Vercel serverless entry
+api/profile.js        Auto name/role for the preview UI
+src/data/zodiac.*     12 signs + palettes
+src/lib/              github / zodiac / stats
+src/render/card.js    600×300 SVG renderer
+public/index.html     preview landing
 scripts/local-server.js
 ```
 
-## Phase roadmap
+## Roadmap
 
-- [x] Phase 1 — username → zodiac SVG
-- [x] Phase 2 (lite) — birthdate mapping + GitHub REST stats
-- [ ] Phase 2+ — GraphQL contributions / streak
-- [ ] Phase 3 — richer themes, animation presets, custom layout params
+- [x] Username → zodiac SVG
+- [x] Birthdate mapping + GitHub REST stats
+- [x] Editable name / role (auto by default)
+- [ ] GraphQL contributions / streak
+- [ ] Richer theme params & animation presets

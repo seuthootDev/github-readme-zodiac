@@ -75,6 +75,6 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(port, () => {
-  console.log(`Developer Zodiac local server → http://localhost:${port}`);
-  console.log(`Try: http://localhost:${port}/api/card?username=octocat`);
+  console.log(`github-readme-zodiac → http://localhost:${port}`);
+  console.log(`Try: http://localhost:${port}/api/card?username=seuthootDev`);
 });
