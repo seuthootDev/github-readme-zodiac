@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/readme-banner.jpg" alt="Colorful zodiac pattern banner" width="100%" />
+</p>
+
 # github-readme-zodiac
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -224,6 +228,7 @@ action.yml
 .github/workflows/update-gist.yml
 assets/signs/                 # title glyphs
 assets/signs-line/            # line-art accent
+docs/readme-banner.jpg
 docs/gist-pin-preview-12-signs.pdf
 docs/gist-pin-preview.html
 docs/license-*.pdf            # Magnific certificates
@@ -246,6 +251,7 @@ Card sign artwork is derived from Magnific (Freepik) assets under a **free licen
 
 | Used for | Asset | Designed by | Certificate |
 |----------|--------|-------------|-------------|
+| README banner (`docs/readme-banner.jpg`) | [hand drawn colorful zodiac pattern](https://www.magnific.com/free-vector/hand-drawn-colorful-zodiac-pattern_4635124.htm) | [Freepik — Magnific.com](https://www.magnific.com) | [docs/license-hand-drawn-colorful-zodiac-pattern-4635124.pdf](docs/license-hand-drawn-colorful-zodiac-pattern-4635124.pdf) |
 | Title glyphs (`assets/signs`) | [zodiac white signs set…](https://www.magnific.com/free-vector/zodiac-white-signs-set-isolated-dark-background-zodiac-line-stylized-symbols-astrological-calendar-collection-horoscope-constellation-vector-illustration_67006418.htm) | [hannazasimova — Magnific.com](https://www.magnific.com) | [docs/license-zodiac-white-signs-set-67006418.pdf](docs/license-zodiac-white-signs-set-67006418.pdf) |
 | Line-art accent (`assets/signs-line`) | [flat zodiac sign collection](https://www.magnific.com/free-vector/flat-zodiac-sign-collection_15112717.htm) | [Freepik — Magnific.com](https://www.magnific.com) | [docs/license-flat-zodiac-sign-collection-15112717.pdf](docs/license-flat-zodiac-sign-collection-15112717.pdf) |
 
