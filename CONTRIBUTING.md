@@ -4,6 +4,22 @@ Thanks for stopping by. This project is intentionally playful — **new ideas ar
 
 You do **not** need to ship a huge feature. Small, creative PRs are often the best fit.
 
+## Help wanted: pinned Gist polish (highest priority)
+
+The **SVG README card** is in good shape. The **pinned Gist** path works end-to-end, but the **ASCII presentation is not yet at the quality we want to call “done.”** That is intentional transparency for future contributors — not a blocker for using Pins.
+
+Known gap:
+
+- **Constellation ASCII ≠ real sky maps.** The pin-side glyphs in [`src/gist/constellations.js`](src/gist/constellations.js) are simplified monospace sketches. Several signs read as abstract star doodles more than recognizable constellations (Orion-style shapes, relative star placement, etc.). We want grids that stay aligned in GitHub’s ~5-line pin preview **and** feel closer to the real figures.
+
+What helps most:
+
+1. Redesign one or more sign grids (keep `*` stars + `/ \ - |` connectors; see file header notes on ✦ width)
+2. Preview with `node scripts/preview-all-gists.js` (and the PDF/HTML under `docs/`)
+3. Open a PR labeled `pin` — even a single improved sign is welcome
+
+SVG constellation art under `assets/constellations` is a separate track; pin ASCII is the pain point today.
+
 ## Ideas we especially love
 
 Beyond the default 12-sign look, feel free to propose:
@@ -11,7 +27,7 @@ Beyond the default 12-sign look, feel free to propose:
 - **Alternate card designs** — new SVG layouts, palettes, or constellation styles (without breaking the pin/SVG readability rules)
 - **Copy & flavor text** — zodiac titles, descriptions, taglines, or tone variants
 - **Role / identity mapping** — better auto-role guesses, sign-flavored role suggestions, locale-friendly labels
-- **Pin (Gist) presentation** — clearer 5-line pin layouts, safer monospace art, accessibility tweaks
+- **Pin (Gist) presentation** — constellation fidelity (above), clearer 5-line layouts, safer monospace art
 - **Docs & DX** — clearer fork setup, examples, previews, translations of docs
 - **Themes & options** — query params, named themes, light/dark variants (keep defaults stable)
 
@@ -19,7 +35,7 @@ If you are unsure whether an idea fits, **open an issue first** — we would rat
 
 ## Ground rules
 
-1. Keep the spirit: *“Your coding personality written in the stars.”* Fun stats, not real astrology claims.
+1. Keep the playful tone: *“Your coding personality written in the stars.”*
 2. Prefer backward-compatible URL/API changes. If you must break something, call it out in the PR.
 3. Pin cards must stay readable in GitHub’s ~5-line Gist preview; avoid alignment that breaks when numbers grow.
 4. Do not commit secrets (tokens, `.env`). Use `.env.example` only.

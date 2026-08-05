@@ -8,9 +8,7 @@ function scale(value, softMax) {
   return clamp(100 * (1 - Math.exp(-value / softMax)));
 }
 
-/**
- * Fun developer traits from GitHub signals (not real astrology).
- */
+/** Developer traits scaled from public GitHub signals. */
 export function calculateStats(profile) {
   const {
     publicRepos = 0,

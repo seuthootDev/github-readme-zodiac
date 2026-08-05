@@ -44,6 +44,8 @@ Builder     █████████░░░  75%              ✦--✦
 
 Open the Gist itself to see the **full** card (description + tagline under the pin fold).
 
+> **Pin quality (help wanted).** Pins work, but the constellation ASCII is still a rough sketch vs real sky maps. SVG cards are the polished path today — see [CONTRIBUTING.md](CONTRIBUTING.md#help-wanted-pinned-gist-polish-highest-priority) if you want to improve `src/gist/constellations.js`.
+
 ### How to put this on your profile Pins
 
 Same pattern as [productive-box](https://github.com/maxam2017/productive-box): **fork → Action fills your Gist → pin that Gist**. No Vercel for Pins.
@@ -172,7 +174,7 @@ Also runs on every push to `main` and daily at 00:00 UTC.
 
 ---
 
-## Stats (playful, not astrology)
+## Stats
 
 Each card shows **3 of 5** traits. Which three appear depends on the sign’s `statKeys`. Values are scaled from public GitHub signals (0–100).
 
@@ -205,8 +207,6 @@ Your fork → GitHub Action
 ```
 README image URL → Vercel /api/card → GitHub API → Zodiac + stats → SVG
 ```
-
-Stats are playful mappings from public GitHub signals, not real astrology.
 
 ## Local development
 
@@ -244,6 +244,7 @@ public/index.html
 ## Contributing
 
 New designs, card copy, sign-flavored roles, pin layouts — **ideas are welcome anytime.**  
+Highest-priority gap today: **pinned Gist constellation ASCII** (see [help wanted](CONTRIBUTING.md#help-wanted-pinned-gist-polish-highest-priority)).  
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Credits / attribution
@@ -270,5 +271,6 @@ Third-party artwork remains under its Magnific license (see certificates above);
 - [x] Editable name / role (auto by default)
 - [x] Pinned Gist Action (productive-box style)
 - [x] Fork-based pin setup guide
+- [ ] Pin constellation ASCII closer to real figures ([help wanted](CONTRIBUTING.md#help-wanted-pinned-gist-polish-highest-priority))
 - [ ] GraphQL contributions / streak
 - [ ] Optional self-host docs for high SVG traffic
