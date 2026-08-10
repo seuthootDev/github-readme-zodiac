@@ -266,7 +266,7 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
     meta.source === "birthdate" ? "mapped by birthdate" : "mapped by star-seed";
   const nameLabel = realName ? `${login} (${realName})` : login;
   const nameLine = realName
-    ? `${escapeXml(login)}<tspan fill="${colors.muted}" font-size="12" font-weight="400">  ${escapeXml(realName)}</tspan>`
+    ? `${escapeXml(login)}<tspan fill="${colors.muted}" font-size="14" font-weight="400">  ${escapeXml(realName)}</tspan>`
     : escapeXml(login);
 
   const displayWidth = clamp(
@@ -311,7 +311,7 @@ ${EMBEDDED_FONT_CSS}
       ${escapeXml(zodiac.title)}
     </text>
 
-    <text class="body" x="36" y="114" fill="${colors.text}" font-size="20" font-weight="600">
+    <text class="body" x="36" y="114" fill="${colors.text}" font-size="22" font-weight="600">
       ${nameLine}
     </text>
     <text class="body" x="36" y="136" fill="${colors.muted}" font-size="13">
