@@ -274,3 +274,19 @@ Third-party artwork remains under its Magnific license (see certificates above);
 - [ ] Pin constellation ASCII closer to real figures ([help wanted](CONTRIBUTING.md#help-wanted-pinned-gist-polish-highest-priority))
 - [ ] GraphQL contributions / streak
 - [ ] Optional self-host docs for high SVG traffic
+
+---
+
+## More from the same author
+
+Want a terminal-style contribution graph too? Sister project:
+
+### [github-readme-insight-terminal-ascii](https://github.com/seuthootDev/github-readme-insight-terminal-ascii)
+
+GitHub stats as macOS / Windows / Ubuntu terminal SVGs — contribution graph, stats, top languages, neofetch.
+
+![mac](https://github-readme-insight-terminal-asci.vercel.app/svg?user=torvalds&theme=mac&scale=0.5)
+
+```md
+![GitHub contribution graph](https://github-readme-insight-terminal-asci.vercel.app/svg?user=YOUR_USERNAME&theme=mac)
+```
