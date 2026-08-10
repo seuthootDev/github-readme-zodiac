@@ -36,7 +36,7 @@ Example pin body (Taurus):
 
 ```text
 ♉ TAURUS · Builder                        ✦
-✨ JUNG SEUNGHOON · Full-Stack Dev           \
+✨ seuthootDev · JUNG SEUNGHOON              \
 ⭐   4  📦  36  👥   0                  ✦-----✦
 Consistency ███████████░  95%             \
 Builder     █████████░░░  75%              ✦--✦

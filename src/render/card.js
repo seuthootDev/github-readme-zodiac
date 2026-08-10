@@ -244,17 +244,30 @@ function renderSignTitle(zodiac, colors, uid) {
     <text class="title" x="${x + size + 10}" y="48" fill="${colors.accent}" font-size="22" font-weight="700" letter-spacing="3">${label}</text>`;
 }
 
+function secondaryDisplayName(profile) {
+  const login = String(profile.username || "").trim();
+  const name = String(profile.name || "").trim();
+  if (!name || !login) return name && name !== login ? name : "";
+  if (name.toLowerCase() === login.toLowerCase()) return "";
+  return name;
+}
+
 /**
  * @param {{ profile: object, zodiac: object, stats: object, meta?: { source?: string, width?: number } }} input
  */
 export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
   const colors = applyDarkerColors(zodiac.colors);
   const displayStats = pickDisplayStats(stats, zodiac, 3);
-  const displayName = profile.name || profile.username;
+  const login = profile.username || profile.name || "developer";
+  const realName = secondaryDisplayName(profile);
   const role = profile.role || "Software Developer";
   const uid = `zg-${profile.username}-${zodiac.id}`.replace(/[^a-z0-9-]/gi, "");
   const sourceLabel =
     meta.source === "birthdate" ? "mapped by birthdate" : "mapped by star-seed";
+  const nameLabel = realName ? `${login} (${realName})` : login;
+  const nameLine = realName
+    ? `${escapeXml(login)}<tspan fill="${colors.muted}" font-size="12" font-weight="400">  ${escapeXml(realName)}</tspan>`
+    : escapeXml(login);
 
   const displayWidth = clamp(
     Number(meta.width) || DEFAULT_DISPLAY_WIDTH,
@@ -264,8 +277,8 @@ export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
   const displayHeight = Math.round((displayWidth / WIDTH) * HEIGHT);
 
   return `<?xml version="1.0" encoding="UTF-8"?>
-<svg width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${WIDTH} ${HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeXml(displayName)} Developer Zodiac Card">
-  <title>${escapeXml(displayName)} — ${escapeXml(zodiac.sign)} ${escapeXml(zodiac.title)}</title>
+<svg width="${displayWidth}" height="${displayHeight}" viewBox="0 0 ${WIDTH} ${HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${escapeXml(nameLabel)} Developer Zodiac Card">
+  <title>${escapeXml(nameLabel)} — ${escapeXml(zodiac.sign)} ${escapeXml(zodiac.title)}</title>
   <defs>
     <linearGradient id="${uid}-bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="${colors.bg0}"/>
@@ -299,7 +312,7 @@ ${EMBEDDED_FONT_CSS}
     </text>
 
     <text class="body" x="36" y="114" fill="${colors.text}" font-size="20" font-weight="600">
-      ${escapeXml(displayName)}
+      ${nameLine}
     </text>
     <text class="body" x="36" y="136" fill="${colors.muted}" font-size="13">
       ${escapeXml(role)}
