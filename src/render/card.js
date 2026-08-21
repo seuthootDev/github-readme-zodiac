@@ -1,4 +1,4 @@
-import { pickDisplayStats } from "../lib/stats.js";
+import { pickDisplayStats, relativeFill, formatStatValue } from "../lib/stats.js";
 import { seededRandom } from "../lib/zodiac.js";
 import signIcons from "../data/sign-icons.js";
 import signIconsLine from "../data/sign-icons-line.js";
@@ -20,8 +20,8 @@ function escapeXml(str) {
     .replace(/'/g, "&apos;");
 }
 
-function barWidth(value, max = 160) {
-  return Math.round((clamp(value) / 100) * max);
+function barWidth(value, peak, max = 160) {
+  return relativeFill(value, peak, max);
 }
 
 function clamp(n, min = 0, max = 100) {
@@ -174,17 +174,18 @@ function renderConstellation(zodiac, colors, uid) {
 }
 
 function renderStatBars(displayStats, colors) {
+  const peak = Math.max(0, ...displayStats.map((s) => Number(s.value) || 0));
   return displayStats
     .map((stat, i) => {
       const y = 200 + i * 26;
-      const w = barWidth(stat.value);
+      const w = barWidth(stat.value, peak);
       return `
       <text x="36" y="${y}" fill="${colors.muted}" font-size="12" font-family="Georgia, 'Times New Roman', serif">${escapeXml(stat.label)}</text>
       <rect x="150" y="${y - 10}" width="160" height="8" rx="2" fill="${colors.text}" opacity="0.08"/>
       <rect x="150" y="${y - 10}" width="${w}" height="8" rx="2" fill="${colors.bar}">
         <animate attributeName="width" from="0" to="${w}" dur="0.9s" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1"/>
       </rect>
-      <text x="320" y="${y}" fill="${colors.text}" font-size="12" font-family="Georgia, 'Times New Roman', serif" opacity="0.85">${stat.value}</text>`;
+      <text x="320" y="${y}" fill="${colors.text}" font-size="12" font-family="Georgia, 'Times New Roman', serif" opacity="0.85">${escapeXml(formatStatValue(stat.value))}</text>`;
     })
     .join("");
 }

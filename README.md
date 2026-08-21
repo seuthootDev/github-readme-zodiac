@@ -176,7 +176,7 @@ Also runs on every push to `main` and daily at 00:00 UTC.
 
 ## Stats
 
-Each card shows **3 of 5** traits. Which three appear depends on the sign’s `statKeys`. Values are scaled from public GitHub signals (0–100).
+Each card shows **3 of 5** traits. Which three appear depends on the sign’s `statKeys`. Values are weighted from public GitHub signals with **no maximum**. Bars are relative to the highest of the three shown.
 
 | Stat | Drawn from (roughly) |
 |------|----------------------|
