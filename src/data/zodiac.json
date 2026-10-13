@@ -9,13 +9,13 @@
     "description": "You ship fast, start boldly, and turn blank repos into living products.",
     "statKeys": ["builder", "explorer", "debugger"],
     "colors": {
-      "bg0": "#1a0a08",
-      "bg1": "#5c1f12",
-      "accent": "#ff6b3d",
-      "star": "#ffd4c2",
-      "text": "#fff4ee",
-      "muted": "#c9a090",
-      "bar": "#ff8f66"
+      "bg0": "#fff1ea",
+      "bg1": "#ffd6c8",
+      "accent": "#f2694a",
+      "star": "#ffffff",
+      "text": "#5a3530",
+      "muted": "#a0716a",
+      "bar": "#ff9b7d"
     },
     "constellation": [
       [120, 48],
@@ -35,13 +35,13 @@
     "description": "You craft durable systems and prefer code that ages well.",
     "statKeys": ["consistency", "builder", "openSource"],
     "colors": {
-      "bg0": "#0d1a12",
-      "bg1": "#1f4a2e",
-      "accent": "#6fbf73",
-      "star": "#d8f0d4",
-      "text": "#eef8ee",
-      "muted": "#9cb89a",
-      "bar": "#86c98a"
+      "bg0": "#f5faea",
+      "bg1": "#d9eec0",
+      "accent": "#5f9f4e",
+      "star": "#ffffff",
+      "text": "#33462a",
+      "muted": "#6f8a62",
+      "bar": "#8fca73"
     },
     "constellation": [
       [110, 56],
@@ -61,13 +61,13 @@
     "description": "Many languages, quick switches — curiosity is your compiler.",
     "statKeys": ["explorer", "debugger", "builder"],
     "colors": {
-      "bg0": "#0a1420",
-      "bg1": "#1a3a55",
-      "accent": "#5ec8ff",
-      "star": "#d9f2ff",
-      "text": "#eef8ff",
-      "muted": "#8fb4c9",
-      "bar": "#7ad4ff"
+      "bg0": "#fffbe8",
+      "bg1": "#fde7a4",
+      "accent": "#d99a12",
+      "star": "#ffffff",
+      "text": "#55461d",
+      "muted": "#9b8a55",
+      "bar": "#f2c14e"
     },
     "constellation": [
       [118, 42],
@@ -87,13 +87,13 @@
     "description": "You nurture projects, docs, and teams with quiet reliability.",
     "statKeys": ["consistency", "openSource", "debugger"],
     "colors": {
-      "bg0": "#0c121c",
-      "bg1": "#243a52",
-      "accent": "#9eb6d4",
-      "star": "#e8eef8",
-      "text": "#f2f6fc",
-      "muted": "#a8b4c4",
-      "bar": "#b4c8e0"
+      "bg0": "#eef6ff",
+      "bg1": "#cfe3fa",
+      "accent": "#4e8fd0",
+      "star": "#ffffff",
+      "text": "#2d4460",
+      "muted": "#6f88a5",
+      "bar": "#88b9ea"
     },
     "constellation": [
       [126, 50],
@@ -113,13 +113,13 @@
     "description": "Your work wants the spotlight — bold ideas, visible impact.",
     "statKeys": ["openSource", "builder", "explorer"],
     "colors": {
-      "bg0": "#1a1204",
-      "bg1": "#6a4510",
-      "accent": "#f0b429",
-      "star": "#fff0c8",
-      "text": "#fff8e8",
-      "muted": "#c9b078",
-      "bar": "#f5c84a"
+      "bg0": "#fff5e3",
+      "bg1": "#ffd9a0",
+      "accent": "#ec7d12",
+      "star": "#ffffff",
+      "text": "#5a3d12",
+      "muted": "#a07f4f",
+      "bar": "#ffaa4a"
     },
     "constellation": [
       [130, 44],
@@ -139,13 +139,13 @@
     "description": "You refine, refactor, and chase clarity until the code sings.",
     "statKeys": ["debugger", "consistency", "builder"],
     "colors": {
-      "bg0": "#10140e",
-      "bg1": "#2e3c22",
-      "accent": "#b8c98a",
-      "star": "#eef2dc",
-      "text": "#f4f7ea",
-      "muted": "#a8b098",
-      "bar": "#c4d49a"
+      "bg0": "#fbf6ec",
+      "bg1": "#efdfc4",
+      "accent": "#b37f3a",
+      "star": "#ffffff",
+      "text": "#4f3d22",
+      "muted": "#9a8566",
+      "bar": "#d8aa68"
     },
     "constellation": [
       [112, 46],
@@ -166,13 +166,13 @@
     "description": "PRs, reviews, balance — you make teamwork feel effortless.",
     "statKeys": ["openSource", "consistency", "explorer"],
     "colors": {
-      "bg0": "#120e18",
-      "bg1": "#3a2850",
-      "accent": "#d4a5e8",
-      "star": "#f4e8fa",
-      "text": "#faf4fc",
-      "muted": "#b8a4c4",
-      "bar": "#e0b8f0"
+      "bg0": "#fff0f6",
+      "bg1": "#ffd1e5",
+      "accent": "#e05f98",
+      "star": "#ffffff",
+      "text": "#5a2c42",
+      "muted": "#a77a8f",
+      "bar": "#f497bf"
     },
     "constellation": [
       [120, 70],
@@ -191,13 +191,13 @@
     "description": "You love solving complex problems and exploring hidden systems.",
     "statKeys": ["debugger", "explorer", "consistency"],
     "colors": {
-      "bg0": "#0a0014",
-      "bg1": "#3b1260",
-      "accent": "#c77dff",
-      "star": "#f0e0ff",
-      "text": "#f8f0ff",
-      "muted": "#b49acc",
-      "bar": "#d4a0ff"
+      "bg0": "#f7f0ff",
+      "bg1": "#e1cff9",
+      "accent": "#8f5fd1",
+      "star": "#ffffff",
+      "text": "#3e2c5c",
+      "muted": "#85749f",
+      "bar": "#b994ea"
     },
     "constellation": [
       [118, 44],
@@ -218,13 +218,13 @@
     "description": "New stacks, new worlds — your repos are expedition logs.",
     "statKeys": ["explorer", "builder", "openSource"],
     "colors": {
-      "bg0": "#140c08",
-      "bg1": "#4a2814",
-      "accent": "#ff9f43",
-      "star": "#ffe8d0",
-      "text": "#fff6ee",
-      "muted": "#c9a888",
-      "bar": "#ffb366"
+      "bg0": "#eff1ff",
+      "bg1": "#d3d9fb",
+      "accent": "#5d6fd9",
+      "star": "#ffffff",
+      "text": "#2e3563",
+      "muted": "#7178a5",
+      "bar": "#95a1ef"
     },
     "constellation": [
       [110, 88],
@@ -244,13 +244,13 @@
     "description": "You think in systems, scale, and long-horizon structure.",
     "statKeys": ["builder", "consistency", "debugger"],
     "colors": {
-      "bg0": "#0c1014",
-      "bg1": "#1e3040",
-      "accent": "#7eb8c9",
-      "star": "#e0eef2",
-      "text": "#eef6f8",
-      "muted": "#90a8b0",
-      "bar": "#92c4d0"
+      "bg0": "#f3f5f8",
+      "bg1": "#dae1ea",
+      "accent": "#5f7590",
+      "star": "#ffffff",
+      "text": "#2f3a48",
+      "muted": "#7a8696",
+      "bar": "#9aabc0"
     },
     "constellation": [
       [124, 40],
@@ -271,13 +271,13 @@
     "description": "Open source energy and odd ideas — you invent the next pattern.",
     "statKeys": ["openSource", "explorer", "builder"],
     "colors": {
-      "bg0": "#061018",
-      "bg1": "#0e3a4a",
-      "accent": "#3dd6c6",
-      "star": "#d8fff8",
-      "text": "#eefcf8",
-      "muted": "#88b8b0",
-      "bar": "#5ee0d0"
+      "bg0": "#edfbfd",
+      "bg1": "#c4edf5",
+      "accent": "#1fa3bb",
+      "star": "#ffffff",
+      "text": "#1f4a52",
+      "muted": "#64959c",
+      "bar": "#6fd0de"
     },
     "constellation": [
       [112, 56],
@@ -298,13 +298,13 @@
     "description": "You blend craft and imagination — code with a little magic.",
     "statKeys": ["explorer", "debugger", "openSource"],
     "colors": {
-      "bg0": "#0a0e1c",
-      "bg1": "#1e2858",
-      "accent": "#8ea8ff",
-      "star": "#e4e8ff",
-      "text": "#f0f2ff",
-      "muted": "#9aa4c8",
-      "bar": "#a8b8ff"
+      "bg0": "#effcf8",
+      "bg1": "#c9f0e3",
+      "accent": "#2fae92",
+      "star": "#ffffff",
+      "text": "#1f4a3e",
+      "muted": "#66988a",
+      "bar": "#79d7b8"
     },
     "constellation": [
       [116, 48],
