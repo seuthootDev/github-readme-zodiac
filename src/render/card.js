@@ -2,6 +2,7 @@ import { pickDisplayStats, relativeFill, formatStatValue } from "../lib/stats.js
 import { seededRandom } from "../lib/zodiac.js";
 import { drawCharacter, INK } from "./characters.js";
 import { EMBEDDED_FONT_CSS } from "../data/embedded-fonts.js";
+import constellationIcons from "../data/constellation-bg-icons.js";
 
 /** Design coordinate space (viewBox). Display size can be smaller via options. */
 const WIDTH = 600;
@@ -88,8 +89,26 @@ function renderConfetti(seed, colors) {
   return parts.join("");
 }
 
+/** Accent-tinted constellation art behind the character, like a star map in the sticker. */
+function renderConstellation(zodiac, colors, uid) {
+  const icon = constellationIcons[zodiac.id];
+  if (!icon) return "";
+  // Art is cropped to its stars; fit it inside the card around the sticker.
+  const x = 344;
+  const y = 12;
+  const w = 244;
+  const h = 200;
+  return `
+    <mask id="${uid}-const" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}">
+      <image href="${icon}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid meet"/>
+    </mask>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${colors.accent}" opacity="0.5" mask="url(#${uid}-const)">
+      <animate attributeName="opacity" values="0.35;0.6;0.35" dur="6s" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" repeatCount="indefinite"/>
+    </rect>`;
+}
+
 /** Character sticker in the top-right, gently bobbing. */
-function renderCharacter(zodiac, colors) {
+function renderCharacter(zodiac, colors, uid) {
   const art = drawCharacter(zodiac.id);
   if (!art) return "";
   const cx = 470;
@@ -99,6 +118,7 @@ function renderCharacter(zodiac, colors) {
   return `
     <circle cx="${cx}" cy="${cy}" r="82" fill="#ffffff" opacity="0.55"/>
     <circle cx="${cx}" cy="${cy}" r="82" fill="none" stroke="${colors.accent}" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" opacity="0.5"/>
+    ${renderConstellation(zodiac, colors, uid)}
     <ellipse cx="${cx}" cy="${cy + 70}" rx="34" ry="5" fill="${colors.text}" opacity="0.08"/>
     <g>
       <animateTransform attributeName="transform" type="translate" values="0 0; 0 -5; 0 0" dur="2.8s" calcMode="spline" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" repeatCount="indefinite"/>
@@ -243,7 +263,7 @@ ${EMBEDDED_FONT_CSS}
     <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#${uid}-glow)"/>
     ${renderConfetti(`${profile.username}-${zodiac.id}`, colors)}
 
-    ${renderCharacter(zodiac, colors)}
+    ${renderCharacter(zodiac, colors, uid)}
 
     ${renderSignBadge(zodiac, colors)}
     <text class="title" x="30" y="82" fill="${colors.text}" font-size="22" font-weight="600">

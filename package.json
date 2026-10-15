@@ -14,6 +14,7 @@
     "extract-signs:glyph": "python scripts/extract-zodiac-signs.py glyph",
     "extract-signs:line": "python scripts/extract-zodiac-signs.py line",
     "extract-signs:constellation": "python scripts/extract-zodiac-signs.py constellation",
+    "extract-signs:constellation-bg": "python scripts/extract-zodiac-signs.py constellation-bg",
     "embed-fonts": "node scripts/embed-fonts.js"
   },
   "engines": {

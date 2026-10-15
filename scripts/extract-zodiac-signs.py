@@ -5,6 +5,8 @@ Packs (source sheets are not committed — keep them locally to re-extract):
   glyph         — 42Z_zodiac8.jpg → assets/signs + src/data/sign-icons.js
   line          — 5561119.jpg     → assets/signs-line + src/data/sign-icons-line.js
   constellation — 7927.jpg        → assets/constellations + src/data/constellation-icons.js
+  constellation-bg — assets/constellations (labels stripped)
+                     → assets/constellations-bg + src/data/constellation-bg-icons.js
 
 Licenses:
   docs/license-zodiac-white-signs-set-67006418.pdf
@@ -15,6 +17,7 @@ Usage:
   python scripts/extract-zodiac-signs.py           # all packs
   python scripts/extract-zodiac-signs.py glyph
   python scripts/extract-zodiac-signs.py constellation
+  python scripts/extract-zodiac-signs.py constellation-bg   # needs scipy
 """
 
 from __future__ import annotations
@@ -251,10 +254,75 @@ def extract_constellation() -> None:
     )
 
 
+# ── constellation-bg (card background: constellation PNGs minus the name) ─
+
+
+def strip_label(rgba: Image.Image) -> Image.Image:
+    """Erase the printed sign name: a row of >=3 letter-sized blobs sharing top/bottom."""
+    from scipy import ndimage
+
+    a = np.array(rgba.convert("RGBA"))
+    alpha = a[:, :, 3]
+    lab, _ = ndimage.label(alpha > 20, structure=np.ones((3, 3)))
+    boxes = [
+        (i + 1, o[0].start, o[0].stop, o[1].start, o[1].stop)
+        for i, o in enumerate(ndimage.find_objects(lab))
+    ]
+    letters = [b for b in boxes if 8 <= b[2] - b[1] <= 30]
+    text: set[int] = set()
+    for b in letters:
+        mates = [c for c in letters if abs(c[1] - b[1]) <= 3 and abs(c[2] - b[2]) <= 3]
+        if len(mates) >= 3:
+            text.update(c[0] for c in mates)
+
+    erase = np.isin(lab, list(text))
+    rows: dict[int, list] = {}
+    for b in boxes:
+        if b[0] in text:
+            rows.setdefault(b[1] // 6, []).append(b)
+    for grp in rows.values():
+        y0 = min(b[1] for b in grp) - 3
+        y1 = max(b[2] for b in grp) + 3
+        x0 = min(b[3] for b in grp) - 4
+        x1 = max(b[4] for b in grp) + 4
+        region = np.zeros_like(erase)
+        region[max(0, y0) : y1, max(0, x0) : x1] = True
+        # Faint anti-alias halo around the word.
+        erase |= region & (alpha <= 60)
+        # Letters that broke the row pattern (e.g. the tail of Q).
+        for b in boxes:
+            if b[0] in text or b[2] - b[1] < 8:
+                continue
+            if b[1] >= y0 - 6 and b[2] <= y1 + 6 and b[3] >= x0 and b[4] <= x1:
+                erase |= lab == b[0]
+    erase = ndimage.binary_dilation(erase, iterations=1) & (erase | (alpha <= 120))
+    a[erase, 3] = 0
+    out = Image.fromarray(a)
+    # Crop to the remaining stars so the card can fit the art edge to edge.
+    bbox = out.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox()
+    if bbox:
+        x0, y0, x1, y1 = bbox
+        out = out.crop((max(0, x0 - 2), max(0, y0 - 2), min(out.width, x1 + 2), min(out.height, y1 + 2)))
+    return out
+
+
+def extract_constellation_bg() -> None:
+    print("pack: constellation-bg")
+    src = ROOT / "assets" / "constellations"
+    images = {name: strip_label(Image.open(src / f"{name}.png")) for name in WESTERN}
+    write_pack(
+        ROOT / "assets" / "constellations-bg",
+        ROOT / "src" / "data" / "constellation-bg-icons.js",
+        images,
+        "constellation-bg",
+    )
+
+
 PACKS = {
     "glyph": extract_glyph,
     "line": extract_line,
     "constellation": extract_constellation,
+    "constellation-bg": extract_constellation_bg,
 }
 
 
