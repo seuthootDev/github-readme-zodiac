@@ -168,7 +168,7 @@ function renderForecast(forecast, colors) {
   return `${speechBubble(x, y, w, h)}
     <path d="${sparklePath(x + 18, y + 16, 5)}" fill="${colors.accent}"/>
     <text class="title" x="${x + 28}" y="${y + 20}" fill="${colors.accent}" font-size="11" font-weight="700" letter-spacing="1.2">TODAY · ${escapeXml(forecast.dateLabel.toUpperCase())}</text>
-    <text class="body" x="${x + 14}" y="${y + 40}" fill="${colors.muted}" font-size="12" font-weight="700">Lucky language <tspan fill="${colors.accent}" font-weight="800">${escapeXml(forecast.luckyLanguage)}</tspan></text>
+    <text class="body" x="${x + 14}" y="${y + 40}" fill="${colors.muted}" font-size="12" font-weight="700">Lucky language: <tspan fill="${colors.accent}" font-weight="800">${escapeXml(forecast.luckyLanguage)}</tspan></text>
     ${adviceText}`;
 }
 
