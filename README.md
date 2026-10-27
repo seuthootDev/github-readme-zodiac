@@ -179,6 +179,12 @@ Sister project ([Asian zodiac](https://github.com/seuthootDev/github-readme-chin
 
 ---
 
+## Daily forecast & streak
+
+The speech bubble is a **daily dev horoscope** — a lucky language (picked from your own top languages) and one piece of advice. It changes every day (UTC) and stays the same all day.
+
+The footer shows your **current streak** and **contributions this year**. This needs `GITHUB_TOKEN` on the server (GraphQL); without it the card shows the tagline instead.
+
 ## How it works
 
 **Pinned Gist (fork)**
@@ -259,7 +265,7 @@ Third-party artwork remains under its Magnific license (see certificates above);
 - [x] Pinned Gist Action (productive-box style)
 - [x] Fork-based pin setup guide
 - [ ] Pin constellation ASCII closer to real figures ([help wanted](CONTRIBUTING.md#help-wanted-pinned-gist-polish-highest-priority))
-- [ ] GraphQL contributions / streak
+- [x] Daily dev forecast + GraphQL contributions / streak
 - [ ] Optional self-host docs for high SVG traffic
 
 ---

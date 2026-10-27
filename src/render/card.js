@@ -128,6 +128,12 @@ function renderCharacter(zodiac, colors, uid) {
     </g>`;
 }
 
+function speechBubble(x, y, w, h) {
+  return `
+    <path d="M${x + 108},${y + 1} L${x + 118},${y - 9} L${x + 128},${y + 1} Z" fill="#ffffff" opacity="0.8"/>
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#ffffff" opacity="0.8"/>`;
+}
+
 /** Speech bubble with the sign blurb, under the character. */
 function renderDescription(zodiac, colors) {
   const lines = wrapText(zodiac.description, 33, 3);
@@ -142,10 +148,57 @@ function renderDescription(zodiac, colors) {
         `<text class="body" x="${x + 14}" y="${y + 22 + i * 16}" fill="${colors.text}" font-size="12" font-weight="700" opacity="0.85">${escapeXml(line)}</text>`,
     )
     .join("\n    ");
-  return `
-    <path d="M${x + 108},${y + 1} L${x + 118},${y - 9} L${x + 128},${y + 1} Z" fill="#ffffff" opacity="0.8"/>
-    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#ffffff" opacity="0.8"/>
+  return `${speechBubble(x, y, w, h)}
     ${text}`;
+}
+
+/** Speech bubble with today's dev horoscope: lucky language + one piece of advice. */
+function renderForecast(forecast, colors) {
+  const x = 352;
+  const y = 210;
+  const w = 236;
+  const advice = wrapText(forecast.advice, 34, 2);
+  const h = 54 + advice.length * 15;
+  const adviceText = advice
+    .map(
+      (line, i) =>
+        `<text class="body" x="${x + 14}" y="${y + 58 + i * 15}" fill="${colors.text}" font-size="12" font-weight="700" opacity="0.85">${escapeXml(line)}</text>`,
+    )
+    .join("\n    ");
+  return `${speechBubble(x, y, w, h)}
+    <path d="${sparklePath(x + 18, y + 16, 5)}" fill="${colors.accent}"/>
+    <text class="title" x="${x + 28}" y="${y + 20}" fill="${colors.accent}" font-size="11" font-weight="700" letter-spacing="1.2">TODAY · ${escapeXml(forecast.dateLabel.toUpperCase())}</text>
+    <text class="body" x="${x + 14}" y="${y + 40}" fill="${colors.muted}" font-size="12" font-weight="700">Lucky language <tspan fill="${colors.accent}" font-weight="800">${escapeXml(forecast.luckyLanguage)}</tspan></text>
+    ${adviceText}`;
+}
+
+/** Two-tongued flame with a light core, centered at (x, y). */
+function flameIcon(x, y, s, color) {
+  const p = (dx, dy) => `${(x + dx * s).toFixed(1)},${(y + dy * s).toFixed(1)}`;
+  const outer = `M${p(0.5, -8)} C${p(2, -4)} ${p(6, -2)} ${p(6, 2.5)} C${p(6, 6)} ${p(3.3, 8)} ${p(0, 8)} C${p(-3.3, 8)} ${p(-6, 6)} ${p(-6, 2.5)} C${p(-6, -0.5)} ${p(-4.5, -2.5)} ${p(-3.5, -4)} C${p(-3, -2)} ${p(-2.2, -1)} ${p(-1, -0.5)} C${p(-1.5, -3.5)} ${p(-0.8, -6)} ${p(0.5, -8)} Z`;
+  const core = `M${p(0, 1)} C${p(1, 3)} ${p(2.5, 4)} ${p(2.5, 5.5)} C${p(2.5, 7)} ${p(1.3, 7.5)} ${p(0, 7.5)} C${p(-1.3, 7.5)} ${p(-2.5, 7)} ${p(-2.5, 5.5)} C${p(-2.5, 4)} ${p(-1, 3)} ${p(0, 1)} Z`;
+  return `<path d="${outer}" fill="${color}"/>
+    <path d="${core}" fill="#ffffff" opacity="0.75"/>`;
+}
+
+/** Footer: real activity (streak + yearly contributions), or the tagline when unavailable. */
+function renderFooter(activity, colors) {
+  if (!activity) {
+    return `<text class="body" x="30" y="300" fill="${colors.accent}" font-size="11" font-weight="800">
+      ✦ Your coding personality written in the stars
+    </text>`;
+  }
+  const parts = [];
+  if (activity.streak > 0) {
+    parts.push(
+      `<tspan fill="${colors.accent}" font-weight="800">${escapeXml(formatStatValue(activity.streak))}-day</tspan> streak`,
+    );
+  }
+  parts.push(
+    `<tspan fill="${colors.accent}" font-weight="800">${escapeXml(formatStatValue(activity.contributions))}</tspan> contributions this year`,
+  );
+  return `${flameIcon(38, 295, 0.85, colors.accent)}
+    <text class="body" x="50" y="300" fill="${colors.muted}" font-size="12" font-weight="700">${parts.join("  ·  ")}</text>`;
 }
 
 /** Sign badge pill + element/planet tag. */
@@ -213,9 +266,9 @@ function secondaryDisplayName(profile) {
 }
 
 /**
- * @param {{ profile: object, zodiac: object, stats: object, meta?: { source?: string, width?: number } }} input
+ * @param {{ profile: object, zodiac: object, stats: object, forecast?: object, activity?: object, meta?: { source?: string, width?: number } }} input
  */
-export function renderZodiacCard({ profile, zodiac, stats, meta = {} }) {
+export function renderZodiacCard({ profile, zodiac, stats, forecast, activity, meta = {} }) {
   const colors = zodiac.colors;
   const displayStats = pickDisplayStats(stats, zodiac, 3);
   const login = profile.username || profile.name || "developer";
@@ -279,14 +332,16 @@ ${EMBEDDED_FONT_CSS}
 
     ${renderLanguages(profile.languages, colors)}
     ${renderStatBars(displayStats, colors)}
-    ${renderDescription(zodiac, colors)}
+    ${forecast ? renderForecast(forecast, colors) : renderDescription(zodiac, colors)}
 
-    <text class="body" x="30" y="300" fill="${colors.accent}" font-size="11" font-weight="800">
-      ✦ Your coding personality written in the stars
-    </text>
-    <text class="body" x="572" y="300" text-anchor="end" fill="${colors.muted}" font-size="10" font-weight="700" opacity="0.8">
+    ${renderFooter(activity, colors)}
+    ${
+      forecast
+        ? ""
+        : `<text class="body" x="572" y="300" text-anchor="end" fill="${colors.muted}" font-size="10" font-weight="700" opacity="0.8">
       ${escapeXml(sourceLabel)}
-    </text>
+    </text>`
+    }
   </g>
   <rect x="3" y="3" width="${WIDTH - 6}" height="${HEIGHT - 6}" rx="21" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.8"/>
   <rect x="1" y="1" width="${WIDTH - 2}" height="${HEIGHT - 2}" rx="23" fill="none" stroke="${INK}" stroke-width="2" opacity="0.12"/>

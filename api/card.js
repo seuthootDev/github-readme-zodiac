@@ -1,6 +1,7 @@
-import { fetchGitHubProfile } from "../src/lib/github.js";
+import { fetchGitHubProfile, fetchActivity } from "../src/lib/github.js";
 import { resolveZodiac } from "../src/lib/zodiac.js";
 import { calculateStats } from "../src/lib/stats.js";
+import { dailyForecast } from "../src/lib/forecast.js";
 import { renderZodiacCard } from "../src/render/card.js";
 
 function sendSvg(res, svg, cacheSeconds = 14400) {
@@ -48,7 +49,10 @@ export default async function handler(req, res) {
       return sendErrorSvg(res, 400, "Invalid GitHub username");
     }
 
-    const profile = await fetchGitHubProfile(username);
+    const [profile, activity] = await Promise.all([
+      fetchGitHubProfile(username),
+      fetchActivity(username),
+    ]);
     if (role) profile.role = role;
     if (name) profile.name = name;
 
@@ -63,6 +67,12 @@ export default async function handler(req, res) {
       profile,
       zodiac,
       stats,
+      activity,
+      forecast: dailyForecast({
+        username: profile.username,
+        signId: zodiac.id,
+        languages: profile.languages,
+      }),
       meta: { source, width },
     });
 
