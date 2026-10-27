@@ -1,29 +1,71 @@
-<p align="center">
-  <img src="docs/readme-banner.jpg" alt="Colorful zodiac pattern banner" width="100%" />
-</p>
-
 # github-readme-zodiac
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![GitHub stars](https://img.shields.io/github/stars/seuthootDev/github-readme-zodiac.svg?style=flat)](https://github.com/seuthootDev/github-readme-zodiac/stargazers) [![Contributing](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-Zodiac-themed profile cards from your GitHub activity.
+**Your GitHub activity, written in the stars.** A zodiac-themed profile card for your README — add it with a single URL.
 
-> Your coding personality written in the stars
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
+
+## Quick start
+
+Paste this into your profile README and replace `YOUR_USERNAME`:
+
+```md
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=YOUR_USERNAME&birthdate=YYYY-MM-DD)
+```
+
+That's it — no fork, no token, no setup. Your sign comes from `birthdate` (or force one with `sign=`), and the stats come from your public GitHub activity.
+
+**Live demo:** [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
+
+## All 12 signs
+
+<p align="center">
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aries" width="360" alt="Aries" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=taurus" width="360" alt="Taurus" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=gemini" width="360" alt="Gemini" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=cancer" width="360" alt="Cancer" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=leo" width="360" alt="Leo" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=virgo" width="360" alt="Virgo" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=libra" width="360" alt="Libra" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=scorpio" width="360" alt="Scorpio" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=sagittarius" width="360" alt="Sagittarius" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=capricorn" width="360" alt="Capricorn" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aquarius" width="360" alt="Aquarius" />
+  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=pisces" width="360" alt="Pisces" />
+</p>
+
+### Options
+
+| Param | Description |
+|-------|-------------|
+| `username` | GitHub username (**required**) |
+| `birthdate` | `YYYY-MM-DD` |
+| `sign` | Force sign: `aries` … `pisces` |
+| `name` | Override display name |
+| `role` | Override role |
+| `width` | Display width in px (`240`–`900`, default **`360`**) |
+
+```md
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
+
+![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480)
+```
 
 Sister project (Asian zodiac): [github-readme-chinese-zodiac](https://github.com/seuthootDev/github-readme-chinese-zodiac)
 
-Two ways to show it on your profile:
-
-| Mode | Where it appears | Style |
-|------|------------------|--------|
-| **Pinned Gist** (like [productive-box](https://github.com/maxam2017/productive-box)) | Profile **Pins** | ASCII / text card |
-| **SVG card** | Profile **README** | Full-color image (default **360×192**) |
-
-**Live SVG demo:** [https://github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)
-
 ---
 
-## What a Pin looks like
+## Bonus: pin it as a Gist
+
+Prefer your profile **Pins** over the README? A fork-based GitHub Action (like [productive-box](https://github.com/maxam2017/productive-box)) can keep a text version of the card in a pinned Gist.
+
+| Mode | Where it appears | Setup |
+|------|------------------|--------|
+| **SVG card** | Profile **README** | One URL (above) |
+| **Pinned Gist** | Profile **Pins** | Fork + token + Action (below) |
+
+### What a Pin looks like
 
 GitHub only shows about **5 lines** of a pinned Gist. Below is the full 12-sign gallery (pin + full gist) from the local preview:
 
@@ -45,7 +87,7 @@ Open the Gist itself to see the **full** card (description + tagline under the p
 
 > **Pin quality (help wanted).** Pins work, but the constellation ASCII is still a rough sketch vs real sky maps. SVG cards are the polished path today — see [CONTRIBUTING.md](CONTRIBUTING.md#help-wanted-pinned-gist-polish-highest-priority) if you want to improve `src/gist/constellations.js`.
 
-### How to put this on your profile Pins
+#### How to put this on your profile Pins
 
 Same pattern as [productive-box](https://github.com/maxam2017/productive-box): **fork → Action fills your Gist → pin that Gist**. No Vercel for Pins.
 
@@ -57,19 +99,17 @@ Same pattern as [productive-box](https://github.com/maxam2017/productive-box): *
 5. **Actions** → **Update Zodiac Gist** → **Run workflow**
 6. [Pin the Gist](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/pinning-items-to-your-profile) on your profile
 
-Details (secrets table, variables, schedule): **[§ Pin a Zodiac Gist — fork setup](#1-pin-a-zodiac-gist--fork-setup)** below.
+Details (secrets table, variables, schedule): **[Fork setup](#fork-setup)** below.
 
----
-
-## 1) Pin a Zodiac Gist — fork setup
+### Fork setup
 
 **Recommended:** fork this repo and run the Action on **your fork**.
 
-### 1. Fork
+#### 1. Fork
 
 Fork [seuthootDev/github-readme-zodiac](https://github.com/seuthootDev/github-readme-zodiac).
 
-### 2. Create a public Gist
+#### 2. Create a public Gist
 
 1. https://gist.github.com/  
 2. Filename e.g. `zodiac.md`, any placeholder text  
@@ -77,12 +117,12 @@ Fork [seuthootDev/github-readme-zodiac](https://github.com/seuthootDev/github-re
 4. Copy only the **Gist ID** (not the `.js` embed URL):  
    `https://gist.github.com/YOU/`**`GIST_ID`**
 
-### 3. Create a token (once)
+#### 3. Create a token (once)
 
 https://github.com/settings/tokens → **Tokens (classic)** → enable **`gist`** only.  
 The token string is shown **once** — save it. The same PAT can be reused on the Asian sister project.
 
-### 4. Secrets and Variables on **your fork**
+#### 4. Secrets and Variables on **your fork**
 
 **Settings → Secrets and variables → Actions**
 
@@ -106,7 +146,7 @@ The token string is shown **once** — save it. The same PAT can be reused on th
 > Birthdate is a **Variable** (`BIRTHDATE`), not a Secret.  
 > Path: Settings → Secrets and variables → Actions → **Variables** → New repository variable.
 
-### 5. Run the Action
+#### 5. Run the Action
 
 1. On **your fork**: **Actions** → enable workflows if prompted  
 2. **Update Zodiac Gist** → **Run workflow**  
@@ -114,62 +154,12 @@ The token string is shown **once** — save it. The same PAT can be reused on th
 
 Also runs on every push to `main` and daily at 00:00 UTC.
 
-### Pin vs SVG
+#### Pin vs SVG
 
 | Feature | Your fork’s Action? | Uses [github-readme-zodiac.vercel.app](https://github-readme-zodiac.vercel.app)? |
 |---------|---------------------|----------------------------------------------------------------------------------|
 | **Pinned Gist** | Yes | No |
 | **SVG in README** | No | Yes (shared public instance), unless you deploy your own |
-
----
-
-## 2) SVG card (README embed)
-
-```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=YOUR_USERNAME)
-```
-
-### Demo
-
-```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
-```
-
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
-
-### All 12 signs (SVG)
-
-<p align="center">
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aries" width="360" alt="Aries" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=taurus" width="360" alt="Taurus" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=gemini" width="360" alt="Gemini" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=cancer" width="360" alt="Cancer" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=leo" width="360" alt="Leo" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=virgo" width="360" alt="Virgo" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=libra" width="360" alt="Libra" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=scorpio" width="360" alt="Scorpio" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=sagittarius" width="360" alt="Sagittarius" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=capricorn" width="360" alt="Capricorn" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=aquarius" width="360" alt="Aquarius" />
-  <img src="https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&sign=pisces" width="360" alt="Pisces" />
-</p>
-
-### SVG options
-
-| Param | Description |
-|-------|-------------|
-| `username` | GitHub username (**required**) |
-| `birthdate` | `YYYY-MM-DD` |
-| `sign` | Force sign: `aries` … `pisces` |
-| `name` | Override display name |
-| `role` | Override role |
-| `width` | Display width in px (`240`–`900`, default **`360`**) |
-
-```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
-
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480)
-```
 
 ---
 
@@ -228,7 +218,6 @@ action.yml
 assets/signs/                 # title glyphs
 assets/signs-line/            # line-art accent
 assets/constellations/        # card constellation art
-docs/readme-banner.jpg
 docs/gist-pin-preview-12-signs.pdf
 docs/gist-pin-preview.html
 docs/license-*.pdf            # Magnific certificates
@@ -252,7 +241,6 @@ Card sign artwork is derived from Magnific (Freepik) assets under a **free licen
 
 | Used for | Asset | Designed by | Certificate |
 |----------|--------|-------------|-------------|
-| README banner (`docs/readme-banner.jpg`) | [hand drawn colorful zodiac pattern](https://www.magnific.com/free-vector/hand-drawn-colorful-zodiac-pattern_4635124.htm) | [Freepik — Magnific.com](https://www.magnific.com) | [docs/license-hand-drawn-colorful-zodiac-pattern-4635124.pdf](docs/license-hand-drawn-colorful-zodiac-pattern-4635124.pdf) |
 | Title glyphs (`assets/signs`) | [zodiac white signs set…](https://www.magnific.com/free-vector/zodiac-white-signs-set-isolated-dark-background-zodiac-line-stylized-symbols-astrological-calendar-collection-horoscope-constellation-vector-illustration_67006418.htm) | [hannazasimova — Magnific.com](https://www.magnific.com) | [docs/license-zodiac-white-signs-set-67006418.pdf](docs/license-zodiac-white-signs-set-67006418.pdf) |
 | Line-art accent (`assets/signs-line`) | [flat zodiac sign collection](https://www.magnific.com/free-vector/flat-zodiac-sign-collection_15112717.htm) | [Freepik — Magnific.com](https://www.magnific.com) | [docs/license-flat-zodiac-sign-collection-15112717.pdf](docs/license-flat-zodiac-sign-collection-15112717.pdf) |
 | Card constellations (`assets/constellations`) | [various zodiac signs flat icon set](https://www.magnific.com/free-vector/various-zodiac-signs-flat-icon-set_9652101.htm) | [Freepik — Magnific.com](https://www.magnific.com) | [docs/license-various-zodiac-signs-flat-icon-set-9652101.pdf](docs/license-various-zodiac-signs-flat-icon-set-9652101.pdf) |
