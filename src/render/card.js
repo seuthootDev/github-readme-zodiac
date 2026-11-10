@@ -202,32 +202,34 @@ function renderFooter(activity, colors) {
 }
 
 /** ☿ drawn as shapes (the embedded fonts have no glyph for it), centered at (x, y). */
-function mercuryGlyph(x, y, color) {
-  return `<g transform="translate(${x} ${y})" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round">
+function mercuryGlyph(x, y, color, scale = 1) {
+  return `<g transform="translate(${x} ${y}) scale(${scale})" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round">
       <path d="M-3.2 -7.5 A3.2 3.2 0 0 0 3.2 -7.5"/>
       <circle cx="0" cy="-1.5" r="3"/>
       <path d="M0 1.5 V7.5 M-2.5 5 H2.5"/>
     </g>`;
 }
 
-/** Caution tape across the top-right corner while Mercury is retrograde (the "don't deploy" meme). */
-function renderRetrogradeTape(retrograde, clipId) {
+/**
+ * While Mercury is retrograde, a tiny Mercury orbits the character backwards,
+ * with a reverse arrow and "Rx". Centered on the character sticker (470, 112).
+ */
+function renderRetrogradeOrbit(retrograde) {
   if (!retrograde) return "";
-  const TAPE = "#ffd23f";
+  const PLANET = "#ffd23f";
   const DARK = "#2b2633";
-  const stripes = Array.from({ length: 28 }, (_, i) => {
-    const x = -140 + i * 10;
-    return `<path d="M${x} 0 l6 0 l-5 4 l-6 0 Z M${x} 42 l6 0 l-5 -4 l-6 0 Z" fill="${DARK}"/>`;
-  }).join("");
-  return `<g class="retrograde" clip-path="url(#${clipId})">
-    <g transform="translate(${WIDTH} 0) rotate(45) translate(0 50)">
-      <rect x="-140" y="0" width="280" height="42" fill="${TAPE}"/>
-      ${stripes}
-      ${mercuryGlyph(-52, 17, DARK)}
-      <text class="title" x="7" y="22" text-anchor="middle" fill="${DARK}" font-size="15" font-weight="700" letter-spacing="1">MERCURY Rx</text>
-      <text class="body" x="0" y="34" text-anchor="middle" fill="${DARK}" font-size="10" font-weight="800" letter-spacing="0.8">DEPLOY WITH CARE</text>
-    </g>
-  </g>`;
+  const cx = 470;
+  const cy = 112;
+  return `<g class="rx-orbit" aria-hidden="true">
+      <path d="M 395 70 A 86 86 0 0 1 ${cx} 26" fill="none" stroke="${DARK}" stroke-width="1.6" stroke-dasharray="3 4" opacity="0.6"/>
+      <path d="M 401 62 l -9 7 l 11 2" fill="none" stroke="${DARK}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.75"/>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" from="0 ${cx} ${cy}" to="-360 ${cx} ${cy}" dur="14s" repeatCount="indefinite"/>
+        <circle cx="510" cy="36" r="13" fill="${PLANET}" stroke="${DARK}" stroke-width="1.5"/>
+        ${mercuryGlyph(510, 37, DARK, 0.85)}
+      </g>
+      <text class="title" x="372" y="58" fill="${DARK}" font-size="13" font-weight="700" opacity="0.8">Rx</text>
+    </g>`;
 }
 
 /** Sign badge pill + element/planet tag. */
@@ -363,6 +365,7 @@ ${EMBEDDED_FONT_CSS}
     ${renderStatBars(displayStats, colors)}
     ${forecast ? renderForecast(forecast, colors) : renderDescription(zodiac, colors)}
 
+    ${renderRetrogradeOrbit(meta.retrograde)}
     ${renderFooter(activity, colors)}
     ${
       forecast
@@ -374,7 +377,6 @@ ${EMBEDDED_FONT_CSS}
   </g>
   <rect x="3" y="3" width="${WIDTH - 6}" height="${HEIGHT - 6}" rx="21" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.8"/>
   <rect x="1" y="1" width="${WIDTH - 2}" height="${HEIGHT - 2}" rx="23" fill="none" stroke="${INK}" stroke-width="2" opacity="0.12"/>
-  ${renderRetrogradeTape(meta.retrograde, `${uid}-clip`)}
 </svg>`;
 }
 

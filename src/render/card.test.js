@@ -60,25 +60,32 @@ describe("renderZodiacCard forecast and activity", () => {
   });
 });
 
-describe("Mercury retrograde tape", () => {
+describe("Mercury retrograde orbit", () => {
   const input = {
     profile: { username: "alice", languages: [] },
     zodiac: signs[0],
     stats: { builder: 1, explorer: 1, debugger: 1, consistency: 1, openSource: 1 },
   };
+  const retrograde = { start: "2026-10-24", end: "2026-11-13" };
 
-  it("drapes a caution tape across the corner while Mercury is retrograde", () => {
-    const svg = renderZodiacCard({ ...input, meta: { retrograde: { start: "2026-10-24", end: "2026-11-13" } } });
-    assert.match(svg, /class="retrograde"/);
-    assert.match(svg, /MERCURY Rx/);
-    assert.match(svg, /DEPLOY WITH CARE/);
+  it("sends a tiny Mercury backwards around the character while retrograde", () => {
+    const svg = renderZodiacCard({ ...input, meta: { retrograde } });
+    assert.match(svg, /class="rx-orbit"/);
+    assert.match(svg, /to="-360 470 112"/);
+    assert.match(svg, />Rx</);
     const opens = (svg.match(/<g[\s>]/g) || []).length;
     const closes = (svg.match(/<\/g>/g) || []).length;
     assert.equal(opens, closes);
   });
 
-  it("no tape otherwise", () => {
+  it("drops the corner tape", () => {
+    const svg = renderZodiacCard({ ...input, meta: { retrograde } });
+    assert.doesNotMatch(svg, /DEPLOY WITH CARE/);
+    assert.doesNotMatch(svg, /class="retrograde"/);
+  });
+
+  it("no orbit otherwise", () => {
     const svg = renderZodiacCard({ ...input, meta: {} });
-    assert.doesNotMatch(svg, /retrograde/);
+    assert.doesNotMatch(svg, /rx-orbit/);
   });
 });

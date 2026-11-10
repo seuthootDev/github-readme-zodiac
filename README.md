@@ -54,7 +54,7 @@ That's it — no fork, no token, no setup. Your sign comes from `birthdate` (or 
 
 ### ☿ Mercury retrograde
 
-While Mercury is retrograde (about three times a year, ~3 weeks each), every card gets a caution tape across the corner: **MERCURY Rx · DEPLOY WITH CARE**. Nothing to configure. Dates come from an ephemeris table in [`src/data/mercury-retrograde.js`](src/data/mercury-retrograde.js) (2026–2035, regenerate with `node scripts/gen-retrograde.js`).
+While Mercury is retrograde (about three times a year, ~3 weeks each), a tiny ☿ planet orbits your character **backwards**, with a reverse arrow and **Rx**: deploy with care. Nothing to configure. (It spins when you open the SVG directly; README embeds show a still frame.) Dates come from an ephemeris table in [`src/data/mercury-retrograde.js`](src/data/mercury-retrograde.js) (2026–2035, regenerate with `node scripts/gen-retrograde.js`).
 
 Sister project (Asian zodiac): [github-readme-chinese-zodiac](https://github.com/seuthootDev/github-readme-chinese-zodiac)
 
