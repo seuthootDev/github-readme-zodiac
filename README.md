@@ -11,7 +11,7 @@
 Paste this into your profile README and replace `YOUR_USERNAME`:
 
 ```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=YOUR_USERNAME&birthdate=YYYY-MM-DD)
+[![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=YOUR_USERNAME&birthdate=YYYY-MM-DD)](https://github.com/seuthootDev/github-readme-zodiac)
 ```
 
 That's it — no fork, no token, no setup. Your sign comes from `birthdate` (or force one with `sign=`), and the stats come from your public GitHub activity.
@@ -47,9 +47,9 @@ That's it — no fork, no token, no setup. Your sign comes from `birthdate` (or 
 | `width` | Display width in px (`240`–`900`, default **`360`**) |
 
 ```md
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)
+[![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev)](https://github.com/seuthootDev/github-readme-zodiac)
 
-![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480)
+[![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480)](https://github.com/seuthootDev/github-readme-zodiac)
 ```
 
 ### ☿ Mercury retrograde
