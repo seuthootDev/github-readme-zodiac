@@ -201,6 +201,35 @@ function renderFooter(activity, colors) {
     <text class="body" x="50" y="300" fill="${colors.muted}" font-size="12" font-weight="700">${parts.join("  ·  ")}</text>`;
 }
 
+/** ☿ drawn as shapes (the embedded fonts have no glyph for it), centered at (x, y). */
+function mercuryGlyph(x, y, color) {
+  return `<g transform="translate(${x} ${y})" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round">
+      <path d="M-3.2 -7.5 A3.2 3.2 0 0 0 3.2 -7.5"/>
+      <circle cx="0" cy="-1.5" r="3"/>
+      <path d="M0 1.5 V7.5 M-2.5 5 H2.5"/>
+    </g>`;
+}
+
+/** Caution tape across the top-right corner while Mercury is retrograde (the "don't deploy" meme). */
+function renderRetrogradeTape(retrograde, clipId) {
+  if (!retrograde) return "";
+  const TAPE = "#ffd23f";
+  const DARK = "#2b2633";
+  const stripes = Array.from({ length: 28 }, (_, i) => {
+    const x = -140 + i * 10;
+    return `<path d="M${x} 0 l6 0 l-5 4 l-6 0 Z M${x} 42 l6 0 l-5 -4 l-6 0 Z" fill="${DARK}"/>`;
+  }).join("");
+  return `<g class="retrograde" clip-path="url(#${clipId})">
+    <g transform="translate(${WIDTH} 0) rotate(45) translate(0 50)">
+      <rect x="-140" y="0" width="280" height="42" fill="${TAPE}"/>
+      ${stripes}
+      ${mercuryGlyph(-52, 17, DARK)}
+      <text class="title" x="7" y="22" text-anchor="middle" fill="${DARK}" font-size="15" font-weight="700" letter-spacing="1">MERCURY Rx</text>
+      <text class="body" x="0" y="34" text-anchor="middle" fill="${DARK}" font-size="10" font-weight="800" letter-spacing="0.8">DEPLOY WITH CARE</text>
+    </g>
+  </g>`;
+}
+
 /** Sign badge pill + element/planet tag. */
 function renderSignBadge(zodiac, colors) {
   const label = zodiac.sign.toUpperCase();
@@ -345,6 +374,7 @@ ${EMBEDDED_FONT_CSS}
   </g>
   <rect x="3" y="3" width="${WIDTH - 6}" height="${HEIGHT - 6}" rx="21" fill="none" stroke="#ffffff" stroke-width="4" opacity="0.8"/>
   <rect x="1" y="1" width="${WIDTH - 2}" height="${HEIGHT - 2}" rx="23" fill="none" stroke="${INK}" stroke-width="2" opacity="0.12"/>
+  ${renderRetrogradeTape(meta.retrograde, `${uid}-clip`)}
 </svg>`;
 }
 

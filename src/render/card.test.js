@@ -59,3 +59,26 @@ describe("renderZodiacCard forecast and activity", () => {
     assert.doesNotMatch(svg, /TODAY ·/);
   });
 });
+
+describe("Mercury retrograde tape", () => {
+  const input = {
+    profile: { username: "alice", languages: [] },
+    zodiac: signs[0],
+    stats: { builder: 1, explorer: 1, debugger: 1, consistency: 1, openSource: 1 },
+  };
+
+  it("drapes a caution tape across the corner while Mercury is retrograde", () => {
+    const svg = renderZodiacCard({ ...input, meta: { retrograde: { start: "2026-10-24", end: "2026-11-13" } } });
+    assert.match(svg, /class="retrograde"/);
+    assert.match(svg, /MERCURY Rx/);
+    assert.match(svg, /DEPLOY WITH CARE/);
+    const opens = (svg.match(/<g[\s>]/g) || []).length;
+    const closes = (svg.match(/<\/g>/g) || []).length;
+    assert.equal(opens, closes);
+  });
+
+  it("no tape otherwise", () => {
+    const svg = renderZodiacCard({ ...input, meta: {} });
+    assert.doesNotMatch(svg, /retrograde/);
+  });
+});

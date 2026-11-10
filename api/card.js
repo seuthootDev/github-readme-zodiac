@@ -3,6 +3,7 @@ import { resolveZodiac } from "../src/lib/zodiac.js";
 import { calculateStats } from "../src/lib/stats.js";
 import { dailyForecast } from "../src/lib/forecast.js";
 import { renderZodiacCard } from "../src/render/card.js";
+import { mercuryRetrograde } from "../src/lib/retrograde.js";
 
 function sendSvg(res, svg, cacheSeconds = 14400) {
   res.setHeader("Content-Type", "image/svg+xml; charset=utf-8");
@@ -73,7 +74,7 @@ export default async function handler(req, res) {
         signId: zodiac.id,
         languages: profile.languages,
       }),
-      meta: { source, width },
+      meta: { source, width, retrograde: mercuryRetrograde() },
     });
 
     return sendSvg(res, svg);

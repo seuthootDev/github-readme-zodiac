@@ -52,6 +52,10 @@ That's it — no fork, no token, no setup. Your sign comes from `birthdate` (or 
 ![Developer Zodiac](https://github-readme-zodiac.vercel.app/api/card?username=seuthootDev&width=480)
 ```
 
+### ☿ Mercury retrograde
+
+While Mercury is retrograde (about three times a year, ~3 weeks each), every card gets a caution tape across the corner: **MERCURY Rx · DEPLOY WITH CARE**. Nothing to configure. Dates come from an ephemeris table in [`src/data/mercury-retrograde.js`](src/data/mercury-retrograde.js) (2026–2035, regenerate with `node scripts/gen-retrograde.js`).
+
 Sister project (Asian zodiac): [github-readme-chinese-zodiac](https://github.com/seuthootDev/github-readme-chinese-zodiac)
 
 ---
