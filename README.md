@@ -1,6 +1,6 @@
 # github-readme-zodiac
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![GitHub stars](https://img.shields.io/github/stars/seuthootDev/github-readme-zodiac.svg?style=flat)](https://github.com/seuthootDev/github-readme-zodiac/stargazers) [![Contributing](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![CI](https://github.com/seuthootDev/github-readme-zodiac/actions/workflows/ci.yml/badge.svg)](https://github.com/seuthootDev/github-readme-zodiac/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![GitHub stars](https://img.shields.io/github/stars/seuthootDev/github-readme-zodiac.svg?style=flat)](https://github.com/seuthootDev/github-readme-zodiac/stargazers) [![Contributing](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 **Your GitHub activity, written in the stars.** A zodiac-themed profile card for your README — add it with a single URL.
 
