@@ -1,6 +1,6 @@
 {
   "name": "github-readme-zodiac",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "GitHub activity → Zodiac SVG cards + pinned Gist Action",
   "license": "MIT",
