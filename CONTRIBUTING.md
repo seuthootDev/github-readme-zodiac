@@ -61,6 +61,10 @@ If you are unsure whether an idea fits, **open an issue first** — we would rat
 | `pin` | Gist / profile pin specific work |
 | `svg` | README SVG card specific work |
 
+## Not ready to code?
+
+That is fine too. Starring the repo or sharing a card you made also helps other people find the project.
+
 ## License
 
 By contributing, you agree that your contributions will be licensed under the [MIT License](LICENSE).
